@@ -1,0 +1,14 @@
+# Local dev only. Do NOT use in production.
+# Requires MONGO_URI in ../.env pointing at the port-forwarded SEBI MongoDB.
+services:
+  chatbot:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: sebi-chat
+    env_file:
+      - ../.env
+    environment:
+      APP_PORT: "3001"
+    ports:
+      - "3001:3001"

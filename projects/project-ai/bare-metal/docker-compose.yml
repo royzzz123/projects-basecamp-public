@@ -1,0 +1,32 @@
+# Bare-metal docker-compose for the SEBI AI service on a single VM.
+#
+# - Image is loaded from a .tar via `docker load` (no registry, no internet
+#   on the target VM).
+# - The AI service reaches the CRUD backend over the docker bridge — same VM
+#   if you're running both stacks here, or via the CRUD VM's IP if it lives
+#   elsewhere. CRUD_BASE_URL is set in sebi-ai.env accordingly.
+# - LLM endpoints (CDAC AIRawat) are reached through the outbound HTTP proxy
+#   configured via LLM_HTTP_PROXY in sebi-ai.env (the VM has no direct
+#   internet access).
+# - All config (ports, hostnames, secrets) comes from sebi-ai.env. Bring the
+#   stack up with:
+#       docker compose --env-file sebi-ai.env up -d
+#   The --env-file flag makes ${VAR} interpolation in THIS file read from
+#   sebi-ai.env; `env_file:` inside the service injects the same file into
+#   the container's environment.
+
+services:
+  ai:
+    image: sebi-ai:bare-metal
+    container_name: ${AI_HOST:-sebi-ai}
+    restart: unless-stopped
+    env_file:
+      - sebi-ai.env
+    ports:
+      - "${APP_PORT:-9000}:${APP_PORT:-9000}"
+    networks:
+      - sebi-net
+
+networks:
+  sebi-net:
+    driver: bridge

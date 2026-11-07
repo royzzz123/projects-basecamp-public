@@ -1,0 +1,42 @@
+# Bare-metal docker-compose for SEBI (frontend + backend on a single VM).
+#
+# - Images are loaded from .tar files via `docker load` (no registry, no internet).
+# - The backend reaches an external MongoDB (e.g. infra VM at 10.102.44.4:27017)
+#   directly over the docker bridge — no host-gateway alias needed.
+# - Both services share a user-defined bridge network so the frontend nginx
+#   can proxy /v1/ → http://${BACKEND_HOST}:${HTTP_PORT}/v1/ via Docker DNS.
+# - All config (ports, hostnames, secrets) comes from sebi.env. Bring the
+#   stack up with:
+#       docker compose --env-file sebi.env up -d
+#   The --env-file flag makes ${VAR} interpolation in THIS file read from
+#   sebi.env; `env_file:` inside each service injects the same file into the
+#   container's environment.
+
+services:
+  backend:
+    image: sebi-crud:bare-metal
+    container_name: ${BACKEND_HOST:-backend}
+    restart: unless-stopped
+    env_file:
+      - sebi.env
+    ports:
+      - "${HTTP_PORT:-8080}:${HTTP_PORT:-8080}"
+    networks:
+      - sebi-net
+
+  frontend:
+    image: sebi-fe:bare-metal
+    container_name: frontend
+    restart: unless-stopped
+    env_file:
+      - sebi.env
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-3000}:${FRONTEND_PORT:-3000}"
+    networks:
+      - sebi-net
+
+networks:
+  sebi-net:
+    driver: bridge

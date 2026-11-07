@@ -1,0 +1,47 @@
+# VCS
+.git/
+.gitignore
+.gitattributes
+.github/
+
+# Env files — never ship secrets into the build context
+.env
+.env.*
+!.env.example
+
+# Build outputs
+/bin/
+/dist/
+/out/
+server
+*.exe
+
+# Test / coverage artifacts
+*.test
+*.out
+coverage.*
+*.coverprofile
+
+# IDE / OS junk
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+# Other Docker configs not used by this build
+deploy/
+bare-metal/docker-compose.yml
+bare-metal/*.sh
+docker-compose*.yml
+
+# Docs — not needed to compile the binary
+docs/
+
+# Project-local working dirs
+inputs/
+.claude/
+db-data/
+
+# Node (if it ever sneaks in)
+node_modules/

@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+neo4j-data/
+web/node_modules/
+web/dist/
+*.log

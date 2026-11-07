@@ -1,0 +1,21 @@
+# Secrets / local env
+.env
+.env.local
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+
+# Logs / OS
+*.log
+.DS_Store
+
+# Neo4j local data
+neo4j-data/

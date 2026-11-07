@@ -1,0 +1,9 @@
+# Applies to bare-metal/Dockerfile builds (BuildKit picks up
+# <dockerfile>.dockerignore in preference to the root .dockerignore).
+# Mirrors the root file so context stays minimal regardless of which one wins.
+node_modules
+.output
+.git
+.gitignore
+*.md
+dist

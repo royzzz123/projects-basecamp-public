@@ -1,0 +1,41 @@
+# Binaries
+bin/
+/server
+/cmd/server/server
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test & coverage output
+*.test
+*.out
+coverage.out
+coverage.html
+
+# Profiling
+*.prof
+*.pprof
+
+# Env / secrets — never commit
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors / IDEs
+.idea/
+.vscode/
+*.swp
+
+# Claude local config
+.claude
+
+# Non imp Folders
+findings/
+db-data/
+dist/

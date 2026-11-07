@@ -1,0 +1,13 @@
+# Local dev only. Do NOT use in production.
+services:
+  ai:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: sebi-ai
+    env_file:
+      - ../.env
+    environment:
+      APP_PORT: "9000"
+    ports:
+      - "9000:9000"

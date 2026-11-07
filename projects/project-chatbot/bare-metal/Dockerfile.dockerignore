@@ -1,0 +1,45 @@
+# VCS
+.git/
+.gitignore
+.gitattributes
+.github/
+
+# Env files — never ship secrets into the build context
+.env
+.env.*
+!.env.example
+
+# Python virtualenvs / caches / build outputs
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build outputs
+/dist/
+
+# IDE / OS junk
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+# Other Docker configs not used by this build
+bare-metal/docker-compose.yml
+bare-metal/*.sh
+docker-compose*.yml
+
+# Old Node.js server (replaced by this Python service)
+server/
+
+# Project-local working dirs
+.claude/
+
+# Node (if it ever sneaks in)
+node_modules/

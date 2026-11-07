@@ -1,0 +1,47 @@
+# Template processed by the nginx:alpine entrypoint at container start.
+# Any file under /etc/nginx/templates/*.template is run through `envsubst`
+# and written to /etc/nginx/conf.d/<same-name-without-.template>.
+#
+# Only `${VAR}` placeholders are substituted — nginx's own `$host`,
+# `$remote_addr` etc. (no curly braces) are left alone.
+
+server {
+  listen ${FRONTEND_PORT};
+  server_name _;
+  root /usr/share/nginx/html;
+  index index.html;
+
+  location /v1/ {
+    proxy_pass http://${BACKEND_HOST}:${HTTP_PORT}/v1/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+
+  # MinIO document proxy — frontend fetches docs via /docs/<complaint_id>/<doc_id>
+  # which maps to the ${MINIO_BUCKET} bucket on the MinIO server.
+  location /docs/ {
+    proxy_pass http://${MINIO_HOST}:${MINIO_PORT}/${MINIO_BUCKET}/;
+    proxy_set_header Host ${MINIO_HOST};
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_buffering off;
+  }
+
+  # AI service proxy — frontend calls /ai/<endpoint> (e.g. /ai/complaint-summary/123)
+  # which is forwarded to the AI backend with the /ai/ prefix stripped.
+  # Read timeout is bumped because LLM-backed endpoints can take a while.
+  location /ai/ {
+    proxy_pass http://${AI_HOST}:${AI_PORT}/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_read_timeout 300s;
+    proxy_send_timeout 300s;
+  }
+
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+}

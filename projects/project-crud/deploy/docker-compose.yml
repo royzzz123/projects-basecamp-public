@@ -1,0 +1,39 @@
+# Local dev only. Do NOT use in production.
+services:
+  mongo:
+    image: mongo:7
+    container_name: sebi-crud-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - sebi-crud-mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  server:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: sebi-crud-server
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      ENV: dev
+      HTTP_PORT: "8080"
+      LOG_LEVEL: info
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB: sebi_crud
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set in .env}
+      JWT_ISSUER: sebi-crud
+      JWT_TTL: 24h
+      CORS_ORIGINS: http://localhost:3000,http://localhost:5173
+      SHUTDOWN_TIMEOUT: 15s
+    ports:
+      - "8080:8080"
+
+volumes:
+  sebi-crud-mongo-data:

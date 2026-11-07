@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ai-backend-config
+  namespace: sebi
+  labels:
+    app: ai-backend
+data:
+  APP_PORT: "9000"
+  HTTP_TIMEOUT_SECONDS: "120"
+
+  CRUD_BASE_URL: "http://backend.sebi.svc.cluster.local"
+
+  MINIO_SECURE: "true"
+
+  LLM_NEMOTRON_NANO_URL: "https://apis.airawat.cdac.in/msebisec-nemotron/api/generate"
+  LLM_NEMOTRON_120B_URL: "https://apis.airawat.cdac.in/msebisec/nemotron3-120bbf16/v1/chat/completions"
+  LLM_LIGHTON_OCR_URL: "https://apis.airawat.cdac.in/msebisec-lightonocr-bbox/v1/chat/completions"
+  LLM_GEMMA_URL: "https://apis.airawat.cdac.in/msebisec/gemma4-26b/v1/chat/completions"
+  LLM_LLAMA_70B_URL: "https://apis.airawat.cdac.in/sebi/llama70b/v1/chat/completions"
+  LLM_MINISTRAL_URL: "https://apis.airawat.cdac.in/msebisec-ministral/api/generate"
+
+  LLM_NEMOTRON_NANO_MODEL_ID: "nemotron-3-nano:30b-a3b-q4_K_M"
+  LLM_NEMOTRON_120B_MODEL_ID: "nvidia/nemotron-3-super"
+  LLM_LIGHTON_OCR_MODEL_ID: "lightonai/LightOnOCR-2-1B-bbox"
+  LLM_GEMMA_MODEL_ID: "gemma-4-26b-aa4b-it"
+  LLM_LLAMA_70B_MODEL_ID: "meta/llama-3.3-70b-instruct"
+  LLM_MINISTRAL_MODEL_ID: "ministral-3:14b-instruct-2512-q8_0"
+
+  LLM_HTTP_PROXY: ""
+  LLM_VERIFY_SSL: "false"

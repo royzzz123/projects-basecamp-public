@@ -1,0 +1,262 @@
+{
+    "complaint_id": 2057548,
+    "complaint_code": "SEBIE/KN24/BENG/048575/2",
+    "complaint_details": "None of their escalation numbers are working, nor they care to reply from their escalation emails. Their CC doesnt transfer the line to escalation. They give fake assurance about call back as they gave me 6 times and even after didnt bother to call until I was kept on hold for 55 minutes 7th time. And after that also, they assured a call back after 15 mins of break as they needed to consult their team but they didnt call for over 1 hour and even refused to talk the next day at an agreed time. They have a very bad service standards and hence I demanded Rs. 2000 for every single day of delay in my complaint, and Rs. 1000000 in compensation.",
+    "sub_category": "Improper Service",
+    "category": {
+        "code": "cat12",
+        "name": "Stock Broker"
+    },
+    "filed_date": "2024-12-30T17:34:25Z",
+    "created_at": "2024-12-30T17:34:25Z",
+    "updated_at": "2025-02-21T11:49:20Z",
+    "closed_at": "2025-02-21T11:49:20Z",
+    "time_taken_seconds": 4558495,
+    "time_taken_label": "52d 18h",
+    "current_status": "CLOSED",
+    "entity": {
+        "screen_id": "stb10169",
+        "name": "RAISE SECURITIES PRIVATE LIMITED (FORMERLY KNOWN AS MONEYLICIOUS SECURITIES PRIVATE LIMITED) (DHAN APP)",
+        "type": "intermediary",
+        "category_code": "cat12",
+        "category_name": "Stock Broker",
+        "registration_number": "INZ000006031"
+    },
+    "status_progression": [
+        {
+            "state": "START",
+            "reached_at": "2024-12-30T17:34:25Z",
+            "current": false
+        },
+        {
+            "state": "AWAITING_FOR_REVIEW",
+            "reached_at": "2025-01-16T20:40:33Z",
+            "current": false
+        },
+        {
+            "state": "FIRST_LEVEL_REVIEW",
+            "reached_at": "2025-01-17T08:37:27Z",
+            "current": false
+        },
+        {
+            "state": "AWAITING_FOR_REVIEW_2",
+            "reached_at": "2025-01-25T17:41:26Z",
+            "current": false
+        },
+        {
+            "state": "SECOND_LEVEL_REVIEW",
+            "reached_at": "2025-02-17T05:58:01Z",
+            "current": false
+        },
+        {
+            "state": "CLOSED",
+            "reached_at": "0001-01-01T00:00:00Z",
+            "current": true
+        }
+    ],
+    "activity_timeline": [
+        {
+            "log_id": 6308429,
+            "at": "2024-12-30T17:34:25Z",
+            "role": "Investor",
+            "action": "level_created",
+            "wfstate": "START",
+            "remarks": "Please refer to complaint details above",
+            "doc_urls": [],
+            "current_assignee_role": "Investor"
+        },
+        {
+            "log_id": 6308430,
+            "at": "2024-12-30T17:34:25Z",
+            "role": "Investor",
+            "action": "level_auto_assign",
+            "wfstate": "START",
+            "remarks": null,
+            "doc_urls": [],
+            "current_assignee_role": "Entity"
+        },
+        {
+            "log_id": 6308431,
+            "at": "2024-12-30T17:34:25Z",
+            "role": "Investor",
+            "action": "copy_mark_to_db",
+            "wfstate": "START",
+            "remarks": null,
+            "doc_urls": [],
+            "current_assignee_role": "Designated Body"
+        },
+        {
+            "log_id": 6341777,
+            "at": "2025-01-09T15:31:24Z",
+            "role": "System",
+            "action": "REMINDER_1",
+            "wfstate": "START",
+            "remarks": "à¤¯à¤¹ à¤¶à¤¿à¤•à¤¾à¤¯à¤¤ 10 à¤¦à¤¿à¤¨à¥‹à¤‚ à¤¸à¥‡ à¤²à¤‚à¤¬à¤¿à¤¤ à¤¹à¥ˆ à¥¤ à¤•à¥ƒà¤ªà¤¯à¤¾ à¤‡à¤¸ à¤¶à¤¿à¤•à¤¾à¤¯à¤¤ à¤ªà¤° à¤¤à¤¤à¥à¤•à¤¾à¤² à¤•à¤¾à¤°à¥à¤°à¤µà¤¾à¤ˆ à¤•à¤°à¥‡à¤‚ à¥¤ Complaint pending for 10 days. You may take immediate action on the complaint, else the complaint will be escalated for review.",
+            "doc_urls": [],
+            "current_assignee_role": null
+        },
+        {
+            "log_id": 6348539,
+            "at": "2025-01-14T15:31:04Z",
+            "role": "System",
+            "action": "REMINDER_2",
+            "wfstate": "START",
+            "remarks": "à¤¯à¤¹ à¤¶à¤¿à¤•à¤¾à¤¯à¤¤ 15 à¤¦à¤¿à¤¨à¥‹à¤‚ à¤¸à¥‡ à¤²à¤‚à¤¬à¤¿à¤¤ à¤¹à¥ˆ à¥¤ à¤¯à¤¦à¤¿ à¤…à¤—à¤²à¥‡ 6 à¤•à¥ˆà¤²à¥‡à¤‚à¤¡à¤° à¤¦à¤¿à¤¨à¥‹à¤‚ à¤•à¥‡ à¤­à¥€à¤¤à¤° à¤à¤Ÿà¥€à¤†à¤° à¤ªà¥à¤°à¤¸à¥à¤¤à¥à¤¤ à¤¨ à¤•à¥€ à¤—à¤ˆ, à¤¤à¥‹ à¤¯à¤¹ à¤¶à¤¿à¤•à¤¾à¤¯à¤¤ à¤¸à¤®à¥€à¤•à¥à¤·à¤¾ à¤¸à¥à¤¤à¤° à¤ªà¤° à¤šà¤²à¥€ à¤œà¤¾à¤à¤—à¥€ à¥¤ Complaint pending for 15 days. The complaint will be taken up for review in case, the ATR is not submitted within next 6 calendar days",
+            "doc_urls": [],
+            "current_assignee_role": null
+        },
+        {
+            "log_id": 6350187,
+            "at": "2025-01-15T10:09:44Z",
+            "role": "Entity",
+            "action": "ATR",
+            "wfstate": "START",
+            "remarks": "Response Attached",
+            "doc_urls": [
+                "45f9f132-3c10-0ae4-f543-cd8fd65d9b37"
+            ],
+            "current_assignee_role": null
+        },
+        {
+            "log_id": 6352358,
+            "at": "2025-01-16T20:40:33Z",
+            "role": "Investor",
+            "action": "FIRST_LEVEL_REVIEW",
+            "wfstate": "AWAITING_FOR_REVIEW",
+            "remarks": "I see that Dhan have given the same reply to both the complaints, and there is absolutely nothing that addresses the other complaint related to Improper Service as detailed in my complaint and can be seen from the email communication attached along with it. Hence, I demanded Rs. 2000 for every single day of delay in my complaint, and Rs. 1000000 in compensation. I am attaching their reply with my inline reply to the point for appropriate redressal of both my complaints. Please let me know if you need any clarification from me. I urge you to look at the email communication shared along with the complaint. If you need any other clarification from me, I would be happy to clarify. My complaints are 100 genuine and must be addressed by the appropriate authority with due diligence, not just for me but for the greater good as they are not only limited to the wrong practice by Dhan just with me but may be with their entire client base.",
+            "doc_urls": [
+                "65ba6fe9-2395-dd6e-ff7c-6254c7f00f93"
+            ],
+            "current_assignee_role": "Designated Body"
+        },
+        {
+            "log_id": 6352359,
+            "at": "2025-01-16T20:40:33Z",
+            "role": "Investor",
+            "action": "level_auto_assign",
+            "wfstate": "AWAITING_FOR_REVIEW",
+            "remarks": null,
+            "doc_urls": [
+                "65ba6fe9-2395-dd6e-ff7c-6254c7f00f93"
+            ],
+            "current_assignee_role": "Designated Body"
+        },
+        {
+            "log_id": 6354446,
+            "at": "2025-01-17T08:37:27Z",
+            "role": "Designated Body",
+            "action": "FORWARD_TO_ENTITY",
+            "wfstate": "FIRST_LEVEL_REVIEW",
+            "remarks": "TM is requested to provide response by Jan 20, 2025.",
+            "doc_urls": [],
+            "current_assignee_role": null
+        },
+        {
+            "log_id": 6377554,
+            "at": "2025-01-23T07:10:13Z",
+            "role": "Entity",
+            "action": "ATR",
+            "wfstate": "FIRST_LEVEL_REVIEW",
+            "remarks": "Response attached",
+            "doc_urls": [
+                "d75d3818-26b8-f766-4417-2cea3a9f66e2"
+            ],
+            "current_assignee_role": null
+        },
+        {
+            "log_id": 6380084,
+            "at": "2025-01-23T15:31:12Z",
+            "role": "System",
+            "action": "REMINDER_1",
+            "wfstate": "FIRST_LEVEL_REVIEW",
+            "remarks": null,
+            "doc_urls": [],
+            "current_assignee_role": null
+        },
+        {
+            "log_id": 6382207,
+            "at": "2025-01-24T13:09:43Z",
+            "role": "Designated Body",
+            "action": "ATR",
+            "wfstate": "FIRST_LEVEL_REVIEW",
+            "remarks": "Dear Sir, General meeting for the case was held on January 24, 2025, to resolve the issue amicably. Investor himself was present, trading member was represented by Mr. Jasraj B and Mr. Karthik P. Both the parties discussed about the dispute, however matter is not resolved amicably between them. In case if investor is still aggrieved, he may take it up with ODR Institution for further conciliation and arbitration at SMARTODR Portal i.e. httpssmartodr.in.",
+            "doc_urls": [],
+            "current_assignee_role": null
+        },
+        {
+            "log_id": 6383100,
+            "at": "2025-01-25T17:41:26Z",
+            "role": "DC",
+            "action": "ASSIGN_TO",
+            "wfstate": "AWAITING_FOR_REVIEW_2",
+            "remarks": null,
+            "doc_urls": [
+                "35ff7aaf-b578-b6fc-81fb-eca1c9230e42"
+            ],
+            "current_assignee_role": "DC"
+        },
+        {
+            "log_id": 6383099,
+            "at": "2025-01-25T17:41:26Z",
+            "role": "DO",
+            "action": "level_auto_assign",
+            "wfstate": "AWAITING_FOR_REVIEW_2",
+            "remarks": null,
+            "doc_urls": [
+                "35ff7aaf-b578-b6fc-81fb-eca1c9230e42"
+            ],
+            "current_assignee_role": "DO"
+        },
+        {
+            "log_id": 6383098,
+            "at": "2025-01-25T17:41:26Z",
+            "role": "Investor",
+            "action": "SECOND_LEVEL_REVIEW",
+            "wfstate": "AWAITING_FOR_REVIEW_2",
+            "remarks": "I attached 3 documents joined together here. 1st document is my inline reply to the 2nd ATR of TM, 2nd document is my inline reply to 1st ATR of the TM which I submitted earlier, and the 3rd document is highlighting some of the key points discussed during the general meeting conducted by NSE with the TM.  I stand by my claim as complained. The TM, rather then addressing the issue and points highlighted, changing their stand about what they did and why did they do so resulting in the problem and making contradictory statements in an attempt to defend their wrongdoings.",
+            "doc_urls": [
+                "35ff7aaf-b578-b6fc-81fb-eca1c9230e42"
+            ],
+            "current_assignee_role": "DO"
+        },
+        {
+            "log_id": 6465438,
+            "at": "2025-02-17T05:58:01Z",
+            "role": "DO",
+            "action": "SEEK_CLARIFICATION",
+            "wfstate": "SECOND_LEVEL_REVIEW",
+            "remarks": "Please refer to the second level review raised by the complainant and provide your comments or update the current status along with supporting documents if required latest by  21.02.2025.",
+            "doc_urls": [],
+            "current_assignee_role": "Designated Body"
+        },
+        {
+            "log_id": 6493591,
+            "at": "2025-02-21T10:23:39Z",
+            "role": "Designated Body",
+            "action": "PROVIDE_CLARIFICATION",
+            "wfstate": "SECOND_LEVEL_REVIEW",
+            "remarks": "Dear sir, The general meeting for the complaint was held on January 24, 2025. As matter was not resolved amicably between the parties and as the investor was not satisfied with the review 1 response of the TM, the investor through review 2 stated that he was not intimated about the margin shortfall of December 19, 2024, on T Day and no time was given to him to replenish the shortfall, thus he claims that the TM wrongfully liquidated the shares without intimation. Further investor claims and alleges that there is service deficiency with the TM.\nTM stated that the customer needs to maintain the defined margin to retain position in derivatives segment FNO, Currency, Commodity, RMS team reserves the right to initiate liquidation of position up to the required margin at any point of time. If the defined margin or exchange margin is short any open position can be squared off at the TMs discretion. TM stated that regarding the service-related issues, the client has contacted multiple times, both by phone and email, and they responded to the same. However, the client expressed dissatisfaction with their responses.\nIn view of the above, if the investor is still aggrieved, he may take it up with ODR Institution for further conciliation and arbitration at SMARTODR Portal i.e. smartodr.in",
+            "doc_urls": [
+                "9d6414b7-126a-7d2c-1807-37a83dc3d0f2"
+            ],
+            "current_assignee_role": "DO"
+        },
+        {
+            "log_id": 6490618,
+            "at": "2025-02-21T11:49:20Z",
+            "role": "DO",
+            "action": "CASE_DISPOSE_OFF",
+            "wfstate": "SECOND_LEVEL_REVIEW",
+            "remarks": "ATR submitted by the entity and clarification provided by NSE is self-explanatory. Please refer to FAQ no. 29 on SCORES website, SEBI SCORES platform is a facilitator of redressal of complainantâ€™s grievance from SEBI regulated entities and does not adjudicate disputes between the complainant and the entity. In such cases, complainant may also approach ODR mechanism, consumer courts or other appropriate civil remedies. Hence, SEBI does not adjudicate disputes or awards compensation. In view of the same, the review complaint is closed. Further if the complainant is still aggrieved, then he may choose to avail the Securities Markets Online Dispute Resolution, ODR mechanism by visiting smartodr.in",
+            "doc_urls": [],
+            "current_assignee_role": null
+        }
+    ],
+    "doc_urls": [
+        "45f9f132-3c10-0ae4-f543-cd8fd65d9b37",
+        "65ba6fe9-2395-dd6e-ff7c-6254c7f00f93",
+        "d75d3818-26b8-f766-4417-2cea3a9f66e2",
+        "35ff7aaf-b578-b6fc-81fb-eca1c9230e42",
+        "9d6414b7-126a-7d2c-1807-37a83dc3d0f2"
+    ]
+}

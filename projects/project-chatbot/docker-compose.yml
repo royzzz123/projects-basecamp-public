@@ -1,0 +1,17 @@
+services:
+  sebi-chat:
+    build: .
+    container_name: sebi-chat
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3001}:3001"
+    # Needed on Linux so the container can reach the host's port-forwarded MongoDB and LLM gateway
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - MONGO_DB=${MONGO_DB:-SEBI-project}
+      - CHAT_LLM_BASE_URL=${CHAT_LLM_BASE_URL:-http://host.docker.internal:4000/v1}
+      - CHAT_LLM_API_KEY=${CHAT_LLM_API_KEY:-no-key}
+      - CHAT_LLM_MODEL=${CHAT_LLM_MODEL:-bedrock/global.anthropic.claude-haiku-4-5-20251001-v1:0}
+      - APP_PORT=3001

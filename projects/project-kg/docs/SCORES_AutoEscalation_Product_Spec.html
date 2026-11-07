@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SCORES AI Analytics — Systemic-Criticality Auto-Escalation — Product Specification</title>
+<style>
+  @page { size: A4; margin: 20mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: "Helvetica Neue", Arial, sans-serif; color: #232a33; font-size: 10.5pt; line-height: 1.5; }
+
+  .run-footer { position: fixed; bottom: 7mm; left: 0; right: 0; font-size: 7.5pt; color: #b3bac7;
+    text-align: center; }
+
+  h1, h2, h3, h4 { color: #1f3a63; font-weight: 700; }
+  h2 { font-size: 15pt; border-bottom: 2pt solid #1f3a63; padding-bottom: 3pt; margin: 0 0 10pt; }
+  h3 { font-size: 12pt; color: #2a5a9e; margin: 16pt 0 5pt; }
+  h4 { font-size: 10.5pt; color: #2a5a9e; margin: 12pt 0 4pt; }
+  p { margin: 0 0 8pt; }
+  ul, ol { margin: 0 0 8pt; padding-left: 18pt; }
+  li { margin: 2pt 0; }
+  strong { color: #17293f; }
+  code { font-family: "Courier New", monospace; font-size: 9pt; background: #eef2f8; padding: 0 3pt; border-radius: 2pt; }
+
+  .section { page-break-before: always; padding-top: 4pt; }
+  .no-break { page-break-inside: avoid; }
+
+  table { width: 100%; border-collapse: collapse; margin: 8pt 0 12pt; font-size: 9.3pt; }
+  th { background: #2b3e5c; color: #fff; text-align: left; padding: 5pt 7pt; font-weight: 600; }
+  td { padding: 5pt 7pt; border-bottom: 0.5pt solid #dbe2ec; vertical-align: top; }
+  tr:nth-child(even) td { background: #eef3fa; }
+
+  .callout { background: #eaf1fb; border-left: 3pt solid #2a5a9e; padding: 8pt 11pt; margin: 10pt 0; border-radius: 0 4pt 4pt 0; }
+  .callout.trigger { background: #fdeeee; border-left-color: #b03a3a; }
+  .callout.trigger b:first-child { color: #b03a3a; }
+  .callout.note b:first-child { color: #2a5a9e; }
+  .callout.guard { background: #fff5ea; border-left-color: #d9821e; }
+  .callout.guard b:first-child { color: #b8690f; }
+
+  figure { margin: 12pt 0; page-break-inside: avoid; }
+  figure img { width: 100%; border: 1pt solid #cdd6e2; border-radius: 4pt; display: block; }
+  figcaption { font-size: 8.5pt; color: #6b7688; margin-top: 4pt; font-style: italic; }
+
+  /* pipeline strip */
+  .pipe { display: flex; align-items: stretch; gap: 0; margin: 10pt 0; font-size: 8.3pt; }
+  .pipe .step { flex: 1; background: #eef3fa; border: 1pt solid #cdd6e2; border-radius: 4pt; padding: 6pt; text-align: center; }
+  .pipe .step b { color: #1f3a63; display: block; font-size: 8.6pt; margin-bottom: 2pt; }
+  .pipe .arr { display: flex; align-items: center; color: #2a5a9e; font-weight: 700; padding: 0 3pt; }
+
+  .tier-badge { display: inline-block; padding: 1pt 6pt; border-radius: 3pt; color: #fff; font-size: 8.5pt; font-weight: 700; }
+  .t3 { background: #c0392b; } .t2 { background: #d9821e; } .t1 { background: #c9a227; } .t0 { background: #7a8494; }
+
+  /* email mock */
+  .email { border: 1pt solid #cdd6e2; border-radius: 5pt; overflow: hidden; margin: 10pt 0; page-break-inside: avoid; }
+  .email .eh { background: #1f3a63; color: #fff; padding: 7pt 11pt; font-size: 9pt; }
+  .email .eb { padding: 10pt 12pt; font-size: 9pt; background: #fbfcfe; }
+  .email .eb .kv { margin: 2pt 0; }
+  .email .eb .lbl { color: #6b7688; display: inline-block; width: 92pt; }
+
+  .cover { height: 247mm; display: flex; flex-direction: column; justify-content: center; text-align: center; page-break-after: always; }
+  .cover .eyebrow { color: #2a5a9e; letter-spacing: 3pt; font-size: 11pt; font-weight: 700; text-transform: uppercase; }
+  .cover h1 { font-size: 30pt; margin: 10pt 0 6pt; color: #1f3a63; line-height: 1.15; }
+  .cover .sub { color: #4a5568; font-size: 12pt; max-width: 150mm; margin: 4pt auto 0; }
+  .cover .rule { width: 120mm; height: 2pt; background: #1f3a63; margin: 18pt auto; }
+  .cover .meta { color: #4a5568; font-size: 10.5pt; }
+  .cover .meta em { color: #2a5a9e; font-style: normal; font-weight: 600; }
+  .toc li { margin: 4pt 0; }
+  .lede { font-size: 11pt; color: #3a4553; }
+</style>
+</head>
+<body>
+
+<div class="run-header">SCORES AI Analytics — Systemic-Criticality Auto-Escalation · Product &amp; Feature Specification</div>
+<div class="run-footer">OnFinance AI · Confidential · Prepared for SEBI</div>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="eyebrow">SCORES AI Analytics</div>
+  <h1>Systemic-Criticality<br/>Auto-Escalation Platform</h1>
+  <div class="sub">A knowledge-graph system that reads every investor complaint, scores its systemic criticality, consolidates related cases, and auto-escalates the critical few to the right person at SEBI — with the evidence attached.</div>
+  <div class="rule"></div>
+  <div class="meta"><em>Product &amp; Feature Specification</em><br/>Prepared by OnFinance AI &nbsp;·&nbsp; Version 1.0<br/>Builds on “Systemic-Criticality Auto-Escalation Framework” v1.0</div>
+</div>
+
+<!-- ============ CONTENTS ============ -->
+<div class="section">
+  <h2>Contents</h2>
+  <ol class="toc">
+    <li>Purpose &amp; Scope</li>
+    <li>Product Overview — the four pillars</li>
+    <li>System Architecture &amp; Data Pipeline</li>
+    <li>The Knowledge Graph &amp; Ontology</li>
+    <li>The Systemic-Criticality Score (SCS)</li>
+    <li>The Auto-Escalation Dashboard</li>
+    <li>AI Case Summaries</li>
+    <li>Ask-the-Graph — natural-language investigation</li>
+    <li><strong>Auto-Escalation &amp; Notification Engine</strong> — cues, routing and delivery to SEBI</li>
+    <li>Explainability, Governance &amp; Guardrails</li>
+    <li>Deployment &amp; Isolation</li>
+    <li>Roadmap</li>
+    <li>Annexure — Parameter Quick Reference</li>
+  </ol>
+</div>
+
+<!-- ============ 1 ============ -->
+<div class="section">
+  <h2>1 · Purpose &amp; Scope</h2>
+  <p class="lede">SEBI’s SCORES portal already classifies investor complaints by regulated-entity type and grievance. That answers <em>“what kind of complaint is this?”</em> It does not answer the question that matters most to senior management: <strong>“which of these, today, could signal harm to a large body of investors, a large quantum of money, or the integrity of the market — and therefore cannot sit in the routine queue?”</strong></p>
+  <p>The <strong>Systemic-Criticality Auto-Escalation Framework (v1.0)</strong> defined <em>what</em> should escalate. This document specifies the <strong>product OnFinance AI has built to operationalise it</strong>: an AI analytics layer that reads each complaint — its text, its regulated entity (RE), its workflow history and the surrounding population — assigns a <strong>Systemic-Criticality Score (SCS)</strong>, consolidates related complaints into single case-files, and <strong>auto-escalates</strong> the systemically significant ones to the appropriate SEBI officer with supporting evidence and reasoning.</p>
+  <h3>1.1 What this product is, and is not</h3>
+  <ul>
+    <li><strong>It is</strong> a prioritisation, escalation and investigation layer that sits on top of SCORES. It surfaces and ranks; it attaches evidence; it notifies the right desk.</li>
+    <li><strong>It is not</strong> a replacement for SEBI’s categories, nor an adjudication or enforcement system. Every escalation is a <em>recommendation</em> — explainable and reversible. SEBI officers decide.</li>
+    <li><strong>It is fully isolated.</strong> It reads the existing SCORES data <strong>read-only</strong> and writes nothing back; no existing SCORES service is modified (see §11).</li>
+  </ul>
+  <h3>1.2 What is new beyond the framework document</h3>
+  <p>Beyond realising the 11-dimension scoring, this platform adds three capabilities the framework anticipated but did not specify: a <strong>knowledge-graph</strong> that makes systemic patterns visible; an <strong>auto-escalation &amp; notification engine</strong> that pushes critical cases to designated officers (§9); and an <strong>investigation surface</strong> — an interactive graph, AI case summaries and a natural-language chatbot — so officers can act on an escalation in minutes.</p>
+</div>
+
+<!-- ============ 2 ============ -->
+<div class="section">
+  <h2>2 · Product Overview — the four pillars</h2>
+  <table>
+    <tr><th style="width:20%">Pillar</th><th>What it does</th></tr>
+    <tr><td><strong>1. Knowledge Graph</strong></td><td>Every complaint, regulated entity, alleged wrongdoing (typology), product/scheme, investor and root-cause cluster becomes a connected node in a graph database (Neo4j). Patterns invisible in a table — 60 complaints about one IPO, a broker with a recurring fraud pattern, an issue spanning 8 states — become visible at a glance.</td></tr>
+    <tr><td><strong>2. Criticality Scoring</strong></td><td>Each complaint is assessed across <strong>11 independent dimensions</strong> (scale, money, fraud-severity, entity importance, velocity, vulnerability, market-integrity, distress, process-failure, cross-portal, legal). These combine into a single 0–100 <strong>SCS</strong> and a tier; any of nine <strong>hard triggers</strong> forces the top tier.</td></tr>
+    <tr><td><strong>3. Auto-Escalation &amp; Notification</strong></td><td>When a case (or a consolidated cluster) crosses a tier or fires a hard trigger, the engine routes it to the <strong>designated SEBI officer</strong> — by email and an in-dashboard alert — with the score breakdown, evidence and a recommended SLA (§9).</td></tr>
+    <tr><td><strong>4. Investigation surface</strong></td><td>A live dashboard (ranked queue + knowledge-graph explorer), a one-line <strong>AI summary</strong> of every case, and an <strong>Ask-the-Graph</strong> chatbot that answers plain-English questions with a live, read-only query.</td></tr>
+  </table>
+  <h3>2.1 Current state (pilot snapshot)</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th><th>Note</th></tr>
+    <tr><td>Complaints in the graph</td><td>17,132</td><td>Full Q4-2024 SCORES population loaded structurally</td></tr>
+    <tr><td>AI-enriched &amp; scored</td><td>~2,000</td><td>Validation slice; full-population enrichment is a background job</td></tr>
+    <tr><td>Regulated entities · timeline events</td><td>20,769 · 135,505</td><td>Graph totals: 183k+ nodes / 230k+ relationships</td></tr>
+    <tr><td>Root-cause &amp; cross-RE clusters</td><td>615</td><td>Consolidated case-files (571 root-cause + 44 cross-RE product)</td></tr>
+    <tr><td>Tier distribution (scored slice)</td><td><span class="tier-badge t3">320 Critical</span> <span class="tier-badge t2">4 Priority</span> <span class="tier-badge t1">143 Watch</span></td><td>320 critical complaints consolidate to ~21 Tier-3 case-files</td></tr>
+  </table>
+</div>
+
+<!-- ============ 3 ============ -->
+<div class="section">
+  <h2>3 · System Architecture &amp; Data Pipeline</h2>
+  <p>The platform is a <strong>hybrid pipeline</strong>: it uses a ruler where a fact is obvious and an AI where a fact is buried in free text. Nothing is written back to the SCORES database.</p>
+  <div class="pipe">
+    <div class="step"><b>① Complaints</b>MongoDB (read-only): complaint text, RE, category, workflow log</div>
+    <div class="arr">→</div>
+    <div class="step"><b>② Triples</b>Structural (deterministic) + semantic (LLM reads the text)</div>
+    <div class="arr">→</div>
+    <div class="step"><b>③ Neo4j</b>Nodes + relationships (the knowledge graph)</div>
+    <div class="arr">→</div>
+    <div class="step"><b>④ Clustering</b>Group same-root-cause complaints</div>
+    <div class="arr">→</div>
+    <div class="step"><b>⑤ Scoring</b>11 dimensions → SCS → tier</div>
+    <div class="arr">→</div>
+    <div class="step"><b>⑥ Escalate</b>Notify officer + dashboard + chatbot</div>
+  </div>
+  <h3>3.1 How complaint text becomes graph facts</h3>
+  <p>A computer cannot reason over a paragraph, but it can reason over small three-part facts (“<em>subject → predicate → object</em>”). These are built two ways:</p>
+  <ul>
+    <li><strong>Deterministic facts (no AI).</strong> “Which entity? Which category? Which state?” are already fields on the complaint. We copy them directly — instant, exact, no risk of an AI guessing when the answer is on the form.</li>
+    <li><strong>AI-read facts (Claude Haiku 4.5).</strong> “Is this fraud? How much money? Is the investor vulnerable?” live only inside the story. The AI reads each complaint under strict instruction — <em>report only what the text supports; never invent an amount or an allegation</em> — and returns tidy, typed signals.</li>
+  </ul>
+  <div class="callout note"><b>Why hybrid.</b> The eleven dimensions are <em>defined</em> KPIs, so the AI’s output is pinned to a fixed vocabulary (the ontology, §4). This keeps every signal both AI-powered <em>and</em> countable — you can ask “how many misappropriation cases?” and get a real number.</div>
+  <h3>3.2 Isolation &amp; safety</h3>
+  <p>The entire platform runs as one standalone service. It consumes existing SCORES data through read-only reads and stores the graph and scores in its own database (Neo4j). <strong>No existing SCORES, CRUD or front-end service is touched</strong> (§11). The AI runs on Claude Haiku 4.5; for an air-gapped SEBI deployment it can be pointed at an on-prem LLM gateway without code changes.</p>
+</div>
+
+<!-- ============ 4 ============ -->
+<div class="section">
+  <h2>4 · The Knowledge Graph &amp; Ontology</h2>
+  <p>The <strong>ontology</strong> is the fixed rulebook: exactly these <em>kinds of node</em> and exactly these <em>kinds of relationship</em>. That discipline is what makes the graph queryable and the KPIs countable.</p>
+  <h3>4.1 Node types (the “pins”)</h3>
+  <table>
+    <tr><th>Node</th><th>Represents</th></tr>
+    <tr><td><strong>Complaint</strong></td><td>One investor grievance — carries the raw text, the structural fields, the AI signals, and the final score/tier</td></tr>
+    <tr><td><strong>Entity</strong></td><td>The regulated entity (broker, AMC, RTA, exchange…) complained against</td></tr>
+    <tr><td><strong>Typology</strong></td><td>The <em>kind</em> of alleged wrongdoing, from a Grave / High / Moderate library</td></tr>
+    <tr><td><strong>Cluster</strong></td><td>A consolidated “one root cause” case-file grouping many similar complaints</td></tr>
+    <tr><td><strong>Product</strong></td><td>The scheme / IPO / app / instrument named in the complaint</td></tr>
+    <tr><td><strong>Investor</strong></td><td>The complainant, stored as a one-way hash — no personal data is retained</td></tr>
+    <tr><td>Category · SubCategory · Location · TimelineEvent</td><td>SEBI taxonomy, geography, and the complaint’s workflow / ATR history</td></tr>
+  </table>
+  <h3>4.2 Relationship types (the “strings”)</h3>
+  <table>
+    <tr><th>Relationship</th><th>Meaning</th><th>Source</th></tr>
+    <tr><td><code>FILED_AGAINST</code>, <code>IN_CATEGORY</code>, <code>LOCATED_IN</code>, <code>FILED_BY</code>, <code>HAS_EVENT</code></td><td>which entity, category, state, investor, workflow log</td><td>Deterministic</td></tr>
+    <tr><td><code>ALLEGES</code> → Typology, <code>IMPLICATES</code> → Product</td><td>the wrongdoing &amp; product read from the text</td><td>AI</td></tr>
+    <tr><td><code>SIMILAR_TO</code>, <code>MEMBER_OF</code>, <code>AGAINST</code>, <code>ON_PRODUCT</code></td><td>semantic similarity &amp; cluster membership</td><td>Derived</td></tr>
+  </table>
+  <figure>
+    <img src="assets/fig_graph_overview.png" alt="Knowledge graph overview"/>
+    <figcaption>Figure 1 — The escalation knowledge graph. Red/blue nodes are complaints and entities; pink hexagons are typologies; green diamonds are consolidated clusters. Systemic hubs (e.g. “Market manipulation”, “Default by the RE”, large registrar clusters) emerge visually.</figcaption>
+  </figure>
+</div>
+
+<!-- ============ 5 ============ -->
+<div class="section">
+  <h2>5 · The Systemic-Criticality Score (SCS)</h2>
+  <p>Each complaint is scored 0–100 on eleven independent dimensions. The additive dimensions combine by weight; vulnerability (F) is a capped multiplier, not an additive term; and any single <strong>hard trigger</strong> overrides the maths to force Tier 3.</p>
+  <table>
+    <tr><th>#</th><th>Dimension</th><th>Weight</th><th>Core question</th></tr>
+    <tr><td>A</td><td>Scale / Mass-Population</td><td>18%</td><td>How many investors, directly or by pattern?</td></tr>
+    <tr><td>B</td><td>Financial Magnitude</td><td>16%</td><td>How much money is at stake — per case and in aggregate?</td></tr>
+    <tr><td>C</td><td>Fraud &amp; Severity Typology</td><td>16%</td><td>Is the alleged conduct inherently grave?</td></tr>
+    <tr><td>D</td><td>Entity Systemic Importance</td><td>10%</td><td>Is the RE systemically important or under stress?</td></tr>
+    <tr><td>E</td><td>Velocity &amp; Emergent Patterns</td><td>10%</td><td>Is this surging or a brand-new typology?</td></tr>
+    <tr><td>G</td><td>Market-Integrity &amp; Contagion</td><td>10%</td><td>Could this threaten price discovery, settlement or trigger a run?</td></tr>
+    <tr><td>I</td><td>Process &amp; Resolution Failure</td><td>8%</td><td>Is the RE’s response evasive or chronically failing?</td></tr>
+    <tr><td>J</td><td>Cross-Portal &amp; External Correlation</td><td>6%</td><td>Does it corroborate other intelligence? <em>(data-dependent — see §12)</em></td></tr>
+    <tr><td>H</td><td>Distress &amp; Escalation Signals</td><td>3%</td><td>Does the language signal fraud, coordination or acute distress?</td></tr>
+    <tr><td>K</td><td>Legal &amp; Reputational Sensitivity</td><td>3%</td><td>Does this carry institutional / legal / reputational risk for SEBI?</td></tr>
+    <tr><td>F</td><td>Vulnerable-Investor Impact</td><td>× multiplier</td><td>Are the affected investors disproportionately vulnerable? (amplifier, +0–30%)</td></tr>
+  </table>
+  <p>The composite SCS maps to four tiers, each with its own routing and SLA:</p>
+  <table>
+    <tr><th>Tier</th><th>SCS band</th><th>Meaning</th><th>Routing &amp; SLA</th></tr>
+    <tr><td><span class="tier-badge t0">Tier 0 · Routine</span></td><td>0–39</td><td>No systemic signal</td><td>Standard SCORES queue</td></tr>
+    <tr><td><span class="tier-badge t1">Tier 1 · Watch</span></td><td>40–59</td><td>Warrants analyst eyes</td><td>Analytics watch-list; weekly digest</td></tr>
+    <tr><td><span class="tier-badge t2">Tier 2 · Priority</span></td><td>60–79</td><td>Likely systemic</td><td>Division / Department Head within 48 hrs</td></tr>
+    <tr><td><span class="tier-badge t3">Tier 3 · Critical</span></td><td>80–100 <em>or any hard trigger</em></td><td>Confirmed / strongly-suspected systemic risk</td><td>Senior-management / WTM-level desk within 24 hrs</td></tr>
+  </table>
+  <figure>
+    <img src="assets/fig_hero_dashboard.png" alt="Case detail with SCS breakdown"/>
+    <figcaption>Figure 2 — A live case (#1741193, an assured-return / Ponzi allegation against a broker). The right panel shows the AI summary, the two hard triggers that fired, the full 11-dimension breakdown, the extracted signals and the verbatim evidence — the complete, explainable basis for its Critical rating.</figcaption>
+  </figure>
+</div>
+
+<!-- ============ 6 ============ -->
+<div class="section">
+  <h2>6 · The Auto-Escalation Dashboard</h2>
+  <p>The dashboard is the senior-management working surface. It has three coordinated panels.</p>
+  <ul>
+    <li><strong>Escalation queue (left).</strong> Every escalated case, ranked by SCS, colour-coded by tier, with its typology and the dimension codes of the triggers that fired. One click opens the full case.</li>
+    <li><strong>Knowledge-graph canvas (centre).</strong> The live escalation graph. Click any node to focus it and its neighbours; double-click to expand; the whole graph can be maximised to full screen. This is where clusters and cross-entity patterns become obvious.</li>
+    <li><strong>Analytics (right).</strong> Three tabs — <em>Clusters</em> (the consolidated case-files, ranked), <em>Dimensions</em> (what is driving escalations), and <em>Entities</em> (the REs with the most escalations).</li>
+  </ul>
+  <figure>
+    <img src="assets/fig_graph_focus.png" alt="Graph focus on a typology hub"/>
+    <figcaption>Figure 3 — Focus view. Selecting the “Default by the RE / broker default” typology highlights every escalated complaint alleging it — an instant, evidence-linked map of a single systemic theme across entities and states.</figcaption>
+  </figure>
+  <figure>
+    <img src="assets/fig_clusters_panel.png" alt="Clusters analytics panel"/>
+    <figcaption>Figure 4 — The Clusters tab: root-cause case-files ranked by size and tier (e.g. an RTA cluster of 60 complainants across 19 states; a “templated 100%” cluster flagged as a possible coordinated filing rather than genuine mass harm).</figcaption>
+  </figure>
+</div>
+
+<!-- ============ 7 ============ -->
+<div class="section">
+  <h2>7 · AI Case Summaries</h2>
+  <p>Every case carries a one- or two-sentence, plain-English summary generated by the AI from the complaint text — <em>what the issue is and why it matters to a regulator</em>. It is generated once and cached, so it opens instantly thereafter. An officer can grasp a case before reading a single line of the raw complaint.</p>
+  <div class="callout"><b>Example (case #1741193).</b> “The investor claims to have invested ₹32 lakh with LFS Broking (a now-banned broker) based on guaranteed monthly returns, but the company stopped payments and is withholding capital since 2022-23. This matters to SEBI because it demonstrates a clear Ponzi / guaranteed-return scheme, requires verification of Investor Protection Fund eligibility for recovery, and highlights systemic compliance failure at a licensed broker.”</div>
+</div>
+
+<!-- ============ 8 ============ -->
+<div class="section">
+  <h2>8 · Ask-the-Graph — natural-language investigation</h2>
+  <p>Officers do not need to learn a query language. The built-in chatbot uses <strong>GraphRAG</strong>: a question in plain English is converted by the AI into a single <strong>read-only</strong> database query, executed against the graph, and answered in words — grounded entirely in the actual results.</p>
+  <ul>
+    <li><strong>Read-only by construction.</strong> The generated query is validated before it runs; anything that could modify the graph is rejected. The chatbot can never change data.</li>
+    <li><strong>Abbreviation-aware.</strong> It is given the real entity list, typologies and category names, so “Zerodha”, “NSE”, “Motilal” or “KFin” resolve to the correct entities automatically.</li>
+    <li><strong>Auditable.</strong> Every answer shows the exact query it ran, so the reasoning is transparent and reproducible.</li>
+  </ul>
+  <figure>
+    <img src="assets/fig_chatbot.png" alt="Ask-the-Graph chatbot"/>
+    <figcaption>Figure 5 — “Top 5 entities by critical complaints” answered from the live graph, with the key typologies per entity. The underlying query is shown to the officer for full transparency.</figcaption>
+  </figure>
+</div>
+
+<!-- ============ 9 ============ -->
+<div class="section">
+  <h2>9 · Auto-Escalation &amp; Notification Engine</h2>
+  <p class="lede">This is the mechanism by which a critical issue stops being a row in a database and becomes an <strong>alert on the right person’s desk</strong>. When the scoring engine assigns a case (or a consolidated cluster) a tier — or fires a hard trigger — the notification engine determines <em>who</em> should know, <em>how</em> they are told, and <em>how fast</em>.</p>
+
+  <h3>9.1 The escalation cues — what causes an escalation</h3>
+  <p>An escalation is raised on any of three cue types. Each is configurable by SEBI.</p>
+  <table>
+    <tr><th>Cue type</th><th>What fires it</th><th>Resulting tier</th></tr>
+    <tr><td><strong>Hard trigger</strong> (9 defined)</td><td>Any single grave signal — a Grave typology (misappropriation, Ponzi, manipulation, RE default, fake entity); single case ≥ ₹5 cr or misappropriation ≥ ₹2 cr; a mass cluster (≥100 complainants / ≥3 states / cross-RE product); an MII in an integrity failure; a credible market-integrity signal; a cluster of second-level reviews against one RE; senior-management allegation + grave typology.</td><td><span class="tier-badge t3">Critical</span></td></tr>
+    <tr><td><strong>Composite threshold</strong></td><td>The weighted 11-dimension SCS crosses a tier band (60 → Priority, 80 → Critical).</td><td><span class="tier-badge t2">Priority</span> / <span class="tier-badge t3">Critical</span></td></tr>
+    <tr><td><strong>Emergent pattern</strong></td><td>A velocity spike (≥4× an RE/product’s baseline) or a newly-formed mass cluster crossing the scale threshold.</td><td><span class="tier-badge t2">Priority</span> → <span class="tier-badge t3">Critical</span></td></tr>
+  </table>
+  <div class="callout trigger"><b>HARD-TRIGGER OVERRIDE —</b> any single hard trigger routes the case to Tier 3 regardless of the computed score. The composite score governs only the cases that do not fire a hard trigger. A one-victim Ponzi allegation escalates just as forcefully as a thousand-victim cluster.</div>
+
+  <h3>9.2 Routing — who gets told</h3>
+  <p>A configurable <strong>routing matrix</strong> maps each escalation to a recipient, a channel and an SLA, based on its tier plus any special dimension. Recipients are SEBI-maintained distribution lists / mailboxes.</p>
+  <table>
+    <tr><th>Escalation</th><th>Designated recipient</th><th>Channel</th><th>SLA</th></tr>
+    <tr><td><span class="tier-badge t3">Tier 3 · Critical</span></td><td>Senior-management / WTM-level desk + relevant department</td><td>Immediate email + dashboard alert</td><td>Within 24 hrs</td></tr>
+    <tr><td><span class="tier-badge t2">Tier 2 · Priority</span></td><td>Division / Department Head</td><td>Daily priority digest + dashboard</td><td>Within 48 hrs</td></tr>
+    <tr><td><span class="tier-badge t1">Tier 1 · Watch</span></td><td>Dealing officer / analytics desk</td><td>Weekly digest + watch-list</td><td>Best-effort</td></tr>
+    <tr><td>Special: <strong>MII</strong> implicated</td><td>MII supervision cell</td><td>Immediate email</td><td>Within 24 hrs</td></tr>
+    <tr><td>Special: <strong>price-sensitive / confidential</strong></td><td>Restricted list; confidential-handling flag set</td><td>Email (restricted); hidden on general dashboard</td><td>Within 24 hrs</td></tr>
+    <tr><td>Special: <strong>acute investor distress</strong></td><td>Investor-services / duty-of-care desk</td><td>Immediate email</td><td>Prompt, humane handling</td></tr>
+  </table>
+
+  <h3>9.3 Channels</h3>
+  <ul>
+    <li><strong>Email (primary)</strong> — a structured escalation notice to the designated mailbox/distribution list, sent via SEBI’s SMTP relay.</li>
+    <li><strong>In-dashboard alert feed</strong> — the live Tier 2/3 queue is the always-on channel; new Critical items surface at the top in real time.</li>
+    <li><strong>Digests</strong> — a daily Priority digest and a weekly Watch digest, so lower tiers are seen without noise.</li>
+    <li><strong>Optional webhook</strong> — Slack / Microsoft Teams / MS-Exchange, for desks that prefer chat-based alerts.</li>
+  </ul>
+
+  <h3>9.4 The escalation notice — what the officer receives</h3>
+  <p>Every notification is a complete, explainable case-file — not just “case X escalated”. It carries:</p>
+  <div class="email">
+    <div class="eh">▲ SCORES Auto-Escalation — <strong>TIER 3 · CRITICAL</strong> — action within 24 hrs</div>
+    <div class="eb">
+      <div class="kv"><span class="lbl">Case</span> #1741193 · ZERODHA BROKING LIMITED · Maharashtra</div>
+      <div class="kv"><span class="lbl">SCS / Tier</span> 55.4 · Critical (+30% vulnerability multiplier)</div>
+      <div class="kv"><span class="lbl">Why (triggers)</span> C: Grave typology (Ponzi / assured-return) · K: senior-management allegation + grave typology</div>
+      <div class="kv"><span class="lbl">Top dimensions</span> Legal/Reputational 100 · Distress 100 · Fraud-Severity 98 · Financial 65</div>
+      <div class="kv"><span class="lbl">AI summary</span> Investor invested ₹32 lakh with a now-banned broker on guaranteed returns; payments stopped since 2022-23 — a clear Ponzi/guaranteed-return scheme; IPF-eligibility check needed.</div>
+      <div class="kv"><span class="lbl">Evidence</span> “…is Being Banned for 5 yrs … for assuring fixed return monthly and the MD … is jailed.”</div>
+      <div class="kv"><span class="lbl">Exposure</span> ₹32,00,000 · confidence: high · consolidated case-file: n/a (single)</div>
+      <div class="kv"><span class="lbl">Recommended</span> Senior-management review; verify IPF eligibility · <strong>Open case ▸</strong> (deep-link to dashboard)</div>
+    </div>
+  </div>
+  <p>The recipient can open the case in one click, see the full graph neighbourhood, and <strong>confirm, de-escalate or re-route</strong> — every decision is logged.</p>
+
+  <h3>9.5 Noise control — why the desk is not flooded</h3>
+  <ul>
+    <li><strong>Cluster de-duplication.</strong> A mass event escalates as <em>one</em> consolidated case-file, not N separate alerts. (In the pilot, 320 critical complaints collapse to ~21 Tier-3 case-files.)</li>
+    <li><strong>Confidence gating.</strong> Low-confidence extractions are marked “provisional — needs verification” rather than asserted, and grave hard-triggers require a minimum confidence.</li>
+    <li><strong>Coordinated-campaign flag.</strong> Near-identical (templated) filings are labelled as possible astroturfing and are <em>not</em> counted as genuine mass harm.</li>
+    <li><strong>Cool-downs &amp; idempotency.</strong> One notice per case per state-change; a re-scored case does not re-alert unless its tier changes. Per-RE baselines stop a high-volume entity being flagged purely for its size.</li>
+  </ul>
+
+  <h3>9.6 Implementation status &amp; integration</h3>
+  <div class="callout note"><b>What is built.</b> The scoring engine already produces, for every case, the tier, the firing dimensions and hard-triggers, the evidence quotes, the AI summary, the exposure estimate and a confidence level — i.e. the full notice payload. The live dashboard is the always-on escalation feed today.</div>
+  <p><strong>To go live on email/chat</strong>, the engine emits each escalation as an event to a dispatch module (an “escalation outbox”); SEBI supplies (a) an SMTP relay or webhook endpoint and (b) the recipient mapping for the routing matrix in §9.2. Because the payload and routing are already computed, this is a thin, configuration-driven integration rather than new analytics — and the routing table, thresholds, recipients and digest cadence are all SEBI-tunable without code changes.</p>
+</div>
+
+<!-- ============ 10 ============ -->
+<div class="section">
+  <h2>10 · Explainability, Governance &amp; Guardrails</h2>
+  <ul>
+    <li><strong>Explainable by default.</strong> Every escalation carries the firing dimensions, the specific triggers, the SCS breakdown, the quoted evidence and a confidence level. No black-box alerts.</li>
+    <li><strong>Human-in-the-loop.</strong> The engine escalates and recommends; it never closes, dismisses, adjudicates or enforces. Officers confirm, de-escalate or re-route; corrections feed back as training signal.</li>
+    <li><strong>False-positive control.</strong> Cluster de-duplication, precision-guarded hard-triggers, per-RE baselines and coordinated-campaign detection keep the critical queue meaningful (pilot: ~16% of scored complaints, consolidating to a handful of case-files).</li>
+    <li><strong>Read-only &amp; private.</strong> The platform never writes to SCORES; complainant identity is stored only as a one-way hash; price-sensitive cases inherit a confidential-handling flag with restricted visibility.</li>
+    <li><strong>Auditable.</strong> Every score, rationale and officer decision is retained for audit and periodic bias review, particularly of vulnerability-weighted decisions.</li>
+  </ul>
+</div>
+
+<!-- ============ 11 ============ -->
+<div class="section">
+  <h2>11 · Deployment &amp; Isolation</h2>
+  <ul>
+    <li><strong>Standalone service.</strong> The entire platform is a single self-contained application plus a Neo4j graph database. It exposes its own API and dashboard.</li>
+    <li><strong>Zero impact on existing SCORES.</strong> It reads existing complaint data read-only (or via existing read APIs) and writes nothing back. No SCORES, CRUD or front-end service is modified; the platform ships its own UI on its own route.</li>
+    <li><strong>VM / on-prem ready.</strong> Containerised (Docker); the AI can be pointed at an on-prem / air-gapped LLM gateway without code changes.</li>
+    <li><strong>Resumable &amp; idempotent.</strong> The enrichment and scoring jobs are batch, resumable and re-runnable, so the graph can be refreshed on a schedule as new complaints arrive.</li>
+  </ul>
+</div>
+
+<!-- ============ 12 ============ -->
+<div class="section">
+  <h2>12 · Roadmap</h2>
+  <table>
+    <tr><th>Item</th><th>Description</th></tr>
+    <tr><td>Full-population enrichment</td><td>Extend AI scoring from the ~2,000-case pilot to all 17,132 complaints (a background job) for statistically complete KPIs.</td></tr>
+    <tr><td>Live notification integration</td><td>Connect the escalation outbox to SEBI’s SMTP relay / Slack / Teams and load the recipient routing matrix (§9.6).</td></tr>
+    <tr><td>SEBI control panel</td><td>A UI to tune thresholds, weights, typology mappings, routing and recipients — with change history — so no code change is ever needed.</td></tr>
+    <tr><td>Cross-portal correlation (Dimension J)</td><td>Wire in Market-Intelligence-portal / examination signals when access is granted (currently scored 0 and flagged, never fabricated).</td></tr>
+    <tr><td>Temporal baselines &amp; recidivism</td><td>Rolling per-RE baselines and repeat-conduct detection as more historical data is ingested.</td></tr>
+    <tr><td>Feedback-driven recalibration</td><td>Use officer confirm / de-escalate decisions to periodically re-tune weights and thresholds.</td></tr>
+  </table>
+</div>
+
+<!-- ============ 13 ============ -->
+<div class="section">
+  <h2>13 · Annexure — Parameter Quick Reference</h2>
+  <h4>Composite weights</h4>
+  <p>A 18% · B 16% · C 16% · D 10% · E 10% · G 10% · I 8% · J 6% · H 3% · K 3% &nbsp;(sum 100%); F = capped multiplier +0–30%. All configurable.</p>
+  <h4>Tier bands</h4>
+  <p>0–39 Routine · 40–59 Watch · 60–79 Priority · 80–100 (or any hard trigger) Critical.</p>
+  <h4>Hard triggers (any one → Tier 3)</h4>
+  <table>
+    <tr><th>#</th><th>Dimension</th><th>Condition (default)</th></tr>
+    <tr><td>1</td><td>A — Scale</td><td>cluster ≥ 100 complainants, or ≥ 3 states, or cross-RE product ≥ 3 REs</td></tr>
+    <tr><td>2</td><td>B — Magnitude</td><td>single ≥ ₹5 cr; misappropriation ≥ ₹2 cr; cluster aggregate ≥ ₹50 cr</td></tr>
+    <tr><td>3</td><td>C — Typology</td><td>any “Grave” typology (misappropriation, manipulation, Ponzi, RE default, fake entity)</td></tr>
+    <tr><td>4–5</td><td>D — Entity</td><td>MII in an integrity/operational failure; payout/redemption-delay cluster (solvency stress)</td></tr>
+    <tr><td>6</td><td>G — Integrity</td><td>credible manipulation / settlement / run-risk / price-sensitive signal</td></tr>
+    <tr><td>7</td><td>I — Process</td><td>cluster of second-level-review escalations against one RE</td></tr>
+    <tr><td>8</td><td>J — Correlation</td><td>corroborates an open MI-portal subject / live examination <em>(when data available)</em></td></tr>
+    <tr><td>9</td><td>K — Sensitivity</td><td>allegation against RE senior management/promoters + a High/Grave typology</td></tr>
+  </table>
+  <p style="margin-top:14pt; color:#6b7688; font-size:9pt; font-style:italic;">End of document. All thresholds, weights, typology mappings, routing rules and recipients in this platform are configurable defaults, tunable by SEBI without code changes.</p>
+</div>
+
+</body>
+</html>

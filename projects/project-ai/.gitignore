@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.env
+.env.local
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Claude local config
+.claude
+
+# Bare-metal image tarballs — never commit; rebuild with bare-metal/build-image.sh
+dist/*
+!dist/.gitkeep
+
+# Bare-metal env file (separate from top-level .env)
+bare-metal/sebi-ai.env

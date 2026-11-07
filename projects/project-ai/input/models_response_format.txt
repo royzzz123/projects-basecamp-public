@@ -1,0 +1,136 @@
+1. LightOnOCR-2-1B-bbox (vision/OCR)          —--- Working
+
+curl -kv -x http://10.201.6.100:1080 \
+  -X POST "https://apis.airawat.cdac.in/msebisec-lightonocr-bbox/v1/chat/completions" \
+  -H "Authorization: Bearer <REDACTED_JWT>" \
+  -H "Content-Type: application/json" \
+  --data '{"model":"lightonai/LightOnOCR-2-1B-bbox","messages":[{"role":"user","content":[{"type":"text","text":"Describe this image in one sentence."},{"type":"image_url","image_url":{"url":"https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg"}}]}]}'
+
+
+RESPONSE:-
+{"id":"chatcmpl-9f40089561806cc7","object":"chat.completion","created":1779370573,"model":"lightonai/LightOnOCR-2-1B-bbox","choices":[{"index":0,"message":{"role":"assistant","content":"# Document Title\n\n## Section 1\n### Subsection 1.1\n- Item 1\n- Item 2\n- Item 3\n\n### Subsection 1.2\n1. First item\n2. Second item\n3. Third item\n\n## Section 2\n### Subsection 2.1\n#### Subsubsection 2.1.1\n- Item A\n- Item B\n- Item C\n\n#### Subsubsection 2.1.2\n1. First point\n2. Second point\n3. Third point\n\n### Subsection 2.2\n#### Subsubsection 2.2.1\n- Item X\n- Item Y\n- Item Z\n\n#### Subsubsection 2.2.2\n1. Point 1\n2. Point 2\n3. Point 3\n\n## Section 3\n### Subsection 3.1\n#### Subsubsection 3.1.1\n- Item 1\n- Item 2\n- Item 3\n\n#### Subsubsection 3.1.2\n1. Point 1\n2. Point 2\n3. Point 3\n\n### Subsection 3.2\n#### Subsubsection 3.2.1\n- Item A\n- Item B\n- Item C\n\n#### Subsubsection 3.2.2\n1. Point 1\n2. Point 2\n3. Point 3\n\n## References\n[1] Author, Title, Journal, Year.\n[2] Author, Title, Book, Publisher, Year.\n\n## Appendix\n### Appendix A\n#### Subsection A.1\n- Item 1\n- Item 2\n- Item 3\n\n#### Subsection A.2\n1. First item\n2. Second item\n3. Third item\n\n### Appendix B\n#### Subsection B.1\n- Item 1\n- Item 2\n- Item 3\n\n#### Subsection B.2\n1. First item\n2. Second item\n3. Third item\n\n## Glossary\n- Term 1: Definition 1\n- Term 2: Definition 2\n- Term 3: Definition 3\n\n## Index\n- Index Entry 1\n- Index Entry 2\n- Index Entry 3\n\n## Acknowledgments\n- Acknowledgment 1\n- Acknowledgment 2\n- Acknowledgment 3\n\n## About the Author\n- About Author 1\n- About Author 2\n- About Author 3\n\n## Contact Information\n- Email: contact@example.com\n- Phone: +1-555-1234\n- Address: 123 Main St, Anytown, USA\n\n## Legal Notice\n- Copyright © 2023 Example Company. All rights reserved.\n\n## Disclaimer\n- Disclaimer 1\n- Disclaimer 2\n- Disclaimer 3\n\n## End of Document\n\n\nNote: The provided image does not contain any specific text, tables, equations, charts, graphs, lists, code blocks, URLs, h* Closing connection
+* TLSv1.2 (OUT), TLS alert, close notify (256):
+yperlinks, email addresses, dates, addresses, phone numbers, references, citations, footnotes, page numbers, headers, footers, figure captions, diagrams, flowcharts, logos, symbols, icons, text boxes, callouts, annotations, watermarks, stamps, signatures, forms, checkboxes, scientific notation, chemical formulas, statistical data, measurements, units, special characters, formatting (bold, italic, underlined, strikethrough), column layouts, borders, lines, dividers, or any other visual or textual elements beyond what has been transcribed.","refusal":null,"annotations":null,"audio":null,"function_call":null,"tool_calls":[],"reasoning":null},"logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":2054,"total_tokens":2804,"completion_tokens":750,"prompt_tokens_details":null},"prompt_logprobs":null,"prompt_token_ids":null,"kv_transfer_params":null}
+
+
+
+
+
+
+—--------------------------------------------------
+
+curl -kv -x http://10.201.6.100:1080 \
+  -X POST "https://apis.airawat.cdac.in/msebisec-nemotron/api/generate" \
+  -H "Authorization: Bearer <REDACTED_JWT>" \
+  -H "Content-Type: application/json" \
+  --data '{"model":"nemotron-3-nano:30b-a3b-q4_K_M","prompt":"Explain Kubernetes","stream":false,"options":{"num_predict":512}}'
+
+
+
+
+Response:
+
+{"model":"nemotron-3-nano:30b-a3b-q4_K_M","created_at":"2026-05-21T13:37:33.1864372Z","response":"User: \"Explain Kubernetes\". Simple request. Provide explanation of Kubernetes, its purpose, architecture, components, concepts, benefits, use cases. Possibly concise but thorough. No special constraints. Provide answer.\n\u003c/think\u003e\n**Kubernetes** (often abbreviated **K8s**) is an open‑source platform for **orchestrating containers** at scale. It was originally designed by Google and is now maintained by the Cloud Native Computing Foundation (CNCF). The name comes from the Greek word for “helmsman” or “pilot,” reflecting its role in steering a fleet of containers.\n\n---\n\n## 1. Why Kubernetes Exists\n\n| Problem in modern apps | What Kubernetes solves |\n|------------------------|------------------------|\n| **Manual deployment** – you need to copy images to servers, track versions, and start/stop services yourself. | **Automated rollout \u0026 rollback** – declarative updates, versioned releases, built‑in health checks. |\n| **Scaling** – adding or removing capacity is tedious and error‑prone. | **Horizontal \u0026 vertical scaling** – auto‑scale pods based on CPU, memory, custom metrics, or external signals. |\n| **Service discovery \u0026 load‑balancing** – you must configure proxies, DNS, or scripts to route traffic. | **Built‑in Service \u0026 Ingress controllers** – stable DNS, reliable load‑balancing, can expose apps externally. |\n| **Stateful workloads** – databases, caches, etc., need persistent storage and ordered start‑up. | **StatefulSet, PersistentVolume, CSI drivers** – deterministic identity, storage binding, graceful failover. |\n| **Complex configurations** – differing environments (dev, test, prod) cause drift. | **ConfigMaps \u0026 Secrets** – externalize configuration, inject securely into pods. |\n| **Self‑healing** – when a node fails, you have to manually restart services. | **Self‑healing loops** – automatic restart, replacement, or rescheduling of failed containers. |\n| **Observability** – gathering metrics, logs, and traces across many services is fragmented. | **Metrics server, Prometheus, Grafana, etc.** – native integration with CNCF ecosystem. |\n\n---\n\n## 2. Core Architectural Concepts\n\n### 2.1. Control Plane (the “brain”)\n\n| Component | Role | Typical Deployment |\n|-----------|------|--------------------|\n| **API Server** | Front‑end for all","done":true,"done_reason":"length","context":[10,25708,1010,11,1010,10,3263,1010,2763,44122,110932,11,1010,10,1503,19464,1010,12,1010,4019,1058,1429,2763,44122,110932,3871,22966,4546,1046,99478,17984,1307,110932,1044,2246,10485,1044,18885,1044,7995,1044,20975,1044,15021,1044,2210,5443,1046,37053,10980,104335,1809,27342,1046,3501,6061,22855,1046,99478,4832,1626,13,1010,1438,1075,45310,1438,1319,83569,112103,1603,1075,1056,1115,21417,1395,1420,3432,109431,14050,10393,1394,1603,52135,1372,33048,38708,1438,1513,9065,1046,2157,1486,16541,9543,1536,13346,1321,1395,3246,17088,1536,1278,28940,26470,84645,17364,1319,47271,26910,1577,1531,2564,9896,1562,1278,18626,3541,1394,2129,4131,2943,2703,1414,1505,2129,47747,1360,3733,38852,2246,4934,1294,44631,1261,31763,1307,38708,1338,16166,1358,1032,1049,1046,12211,110932,3203,3742,1267,1124,29667,1294,6897,28026,1312,5675,110932,84431,1572,1124,8129,118510,1045,1124,1742,7208,1742,2609,23685,1124,1603,88793,33751,1438,1775,1636,2534,1317,9441,8061,1317,31667,1044,6933,15628,1044,1321,3030,1047,26790,6591,14019,1046,1312,1603,10807,1313,1621,10401,1660,1748,10401,3581,1438,1775,13846,2277,26840,1044,4991,1286,37247,1044,8088,109431,1259,4612,29196,1046,1572,1124,1603,43230,1302,1438,1775,12327,1505,23771,10551,1395,114879,1321,3880,109431,1553,1774,1046,1312,1603,43496,1748,13166,41499,1438,1775,8652,109431,33004,93735,4057,1408,24861,1044,6628,1044,5936,31581,1044,1505,10801,12305,1046,1572,1124,1603,4271,24530,1748,5174,109431,7903,14188,1438,1775,1636,4016,11337,76870,1564,1044,44391,1044,1505,31247,1317,9127,16308,1046,1312,1603,113752,109431,1259,10788,1748,1656,5085,45655,1438,1775,14056,44391,1044,22725,5174,109431,7903,14188,1044,1710,44160,28026,82345,1046,1572,1124,1603,3906,2902,69147,1115,1438,1775,32162,1044,112422,1044,6704,3109,2534,31862,9287,1321,15823,3030,109431,1982,1046,1312,1603,3906,2902,4982,1044,14553,13808,35084,1044,103574,27435,1438,1775,86668,13006,1044,9287,9286,1044,124703,7195,3245,1046,1572,1124,1603,74800,35565,1438,1775,56351,24376,1319,7539,1044,2688,1044,13373,1041,6706,36181,1046,1312,1603,6181,90601,1748,117343,1438,1775,10801,2033,10254,1044,29824,98053,2203,93735,1046,1572,1124,1603,31445,109431,1268,8110,1438,1775,2200,1261,6194,24372,1044,1636,1736,1317,23898,29652,6591,1046,1312,1603,31445,109431,1268,8110,35341,1438,1775,23966,29652,1044,21194,1044,1505,1610,109166,1307,9700,38708,1046,1572,1124,1603,36700,3850,1438,1775,41398,31581,1044,31134,1044,1321,33947,5669,3325,6591,1395,93620,1046,1312,1603,58427,6395,1044,12681,74154,1044,25370,3088,1044,6704,11621,1775,15191,18984,1454,22266,26910,53157,1* Closing connection
+* TLSv1.2 (OUT), TLS alert, close notify (256):
+046,2734,16166,1358,1032,1050,1046,17839,61842,3018,54381,1115,1267,1595,1032,1050,1046,1049,1046,15296,106981,1319,3265,2129,104878,1414,1801,1124,18947,1312,31852,1312,84676,111050,1572,1124,8129,4000,1124,1742,2609,1124,4000,1742,4000,1742,23685,1124,1603,19954,15976,1438,1312,19886,109431,1474,1394,1747],"total_duration":3903556305,"load_duration":229439179,"prompt_eval_count":19,"prompt_eval_duration":48514206,"eval_count":512,"eval_duration":3396922348}
+
+
+
+
+
+
+
+
+—--------------------------------------------------
+
+
+
+3. Gemma-4-26B (vision chat)
+
+curl -kv -x http://10.201.6.100:1080 \
+  -X POST "https://apis.airawat.cdac.in/msebisec/gemma4-26b/v1/chat/completions" \
+  -H "Authorization: Bearer <REDACTED_JWT>" \
+  -H "Content-Type: application/json" \
+  --data '{"model":"gemma-4-26b-aa4b-it","messages":[{"role":"user","content":[{"type":"text","text":"Describe this image in one  cleasentence."},{"type":"image_url","image_url":{"url":"https://cdn.britannica.com/61/93061-050-99147DCE/Statue-of-Liberty-Island-New-York-Bay.jpg"}}]}]}'
+
+
+Response:
+
+{"id":"chatcmpl-a6b8f9c6b7be3bc6","object":"chat.completion","created":1779371636,"model":"gemma-4-26b-aa4b-it","choices":[{"index":0,"message":{"role":"assistant","content":"The Statue of Liberty stands prominently in the harbor against the backdrop of the New York City skyline under a clear sky.","refusal":null,"annotations":null,"audio":null,"function_call":null,"tool_calls":[],"reasoning":null},"logprobs":null,"finish_reason":"stop","stop_reason":106,"token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":286,"total_tokens":310,"completion_tokens":24,"prompt_tokens_details":null},"prompt_logprobs":null,"prompt_token_ids":null,"kv_transfer_params":null}
+
+
+
+---------------------------------------------------
+
+4. Nemotron3 120b 
+
+curl -kv -x http://10.201.6.100:1080   -X POST "https://apis.airawat.cdac.in/msebisec/nemotron3-120bbf16/v1/chat/completions"   -H "Authorization: Bearer <REDACTED_JWT>"   -H "Content-Type: application/json"   --data '{"messages":[{"role":"user","content":"What is the capital of France?"}]}'
+
+
+Response:
+
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 10.201.6.100:1080...
+* Connected to 10.201.6.100 (10.201.6.100) port 1080
+* CONNECT tunnel: HTTP/1.1 negotiated
+* allocate connect buffer
+* Establish HTTP proxy tunnel to apis.airawat.cdac.in:443
+> CONNECT apis.airawat.cdac.in:443 HTTP/1.1
+> Host: apis.airawat.cdac.in:443
+> User-Agent: curl/8.5.0
+> Proxy-Connection: Keep-Alive
+>
+< HTTP/1.1 200 Connection Established
+< Proxy-Agent: IWSS
+< Date: Fri, 22 May 2026 05:02:33 GMT
+< Age: 0
+< Proxy-Connection: Keep-Alive
+< Via: 1.1 MUSBDSFPPRY2-wcg
+<
+* CONNECT phase completed
+* CONNECT tunnel established, response 200
+* ALPN: curl offers h2,http/1.1
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.2 (IN), TLS handshake, Certificate (11):
+* TLSv1.2 (IN), TLS handshake, Server key exchange (12):
+* TLSv1.2 (IN), TLS handshake, Server finished (14):
+* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
+* TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.2 (OUT), TLS handshake, Finished (20):
+* TLSv1.2 (IN), TLS handshake, Finished (20):
+* SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384 / secp384r1 / rsaEncryption
+* ALPN: server did not agree on a protocol. Uses default.
+* Server certificate:
+*  subject: CN=apis.airawat.cdac.in
+*  start date: Feb 17 07:02:32 2026 GMT
+*  expire date: Mar 21 07:02:31 2027 GMT
+*  issuer: C=IN; ST=Maharashtra; L=Mumbai; O=SEBI; OU=MSS; CN=SOCNOC; emailAddress=Soc_Support@sebi.gov.in
+*  SSL certificate verify result: self-signed certificate in certificate chain (19), continuing anyway.
+*   Certificate level 0: Public key type RSA (2048/112 Bits/secBits), signed using sha256WithRSAEncryption
+*   Certificate level 1: Public key type RSA (2048/112 Bits/secBits), signed using sha256WithRSAEncryption
+* using HTTP/1.x
+> POST /msebisec/nemotron3-120bbf16/v1/chat/completions HTTP/1.1
+> Host: apis.airawat.cdac.in
+> User-Agent: curl/8.5.0
+> Accept: */*
+> Authorization: Bearer <REDACTED_JWT>
+> Content-Type: application/json
+> Content-Length: 73
+>
+< HTTP/1.1 200 OK
+< content-type: application/json
+< date: Fri, 22 May 2026 05:02:33 GMT
+< server: uvicorn
+< x-kong-upstream-latency: 2791
+< x-kong-proxy-latency: 1
+< via: 1.1 kong/3.9.0.1-enterprise-edition, 1.1 MUSBDSFPPRY2-wcg
+< x-kong-request-id: 3aeec76f19291a6ac98a200c8e4a9c2f
+< set-cookie: SERVERID=api-manager; path=/
+< Content-Length: 2013
+< Age: 6
+< Connection: close
+<
+{"id":"chatcmpl-a8b91644d9a56054","object":"chat.completion","created":1779426153,"model":"nvidia/nemotron-3-super","choices":[{"index":0,"message":{"role":"assistant","content":"\n\nThe capital of France is **Paris**.  \n\nParis has served as the capital since the 10th century and is not only the political center of France but also its largest city, renowned globally for its art, culture, history, and landmarks like the Eiffel Tower, Louvre Museum, and Notre-Dame Cathedral.  \n\nIf you have any follow-up questions about France, geography, or anything else—feel free to ask! 😊","refusal":null,"annotations":null,"audio":null,"function_call":null,"tool_calls":[],"reasoning":"Okay, the user is asking for the capital of France. This is a very basic geography question, so they're probably either a young student testing knowledge or someone needing quick confirmation. \n\nHmm, the answer is straightforward—Paris—but I should consider why they're asking. Maybe they're preparing for a quiz, or perhaps English* Closing connection
+* TLSv1.2 (OUT), TLS alert, close notify (256):
+ isn't their first language and they want to verify. No signs of frustration or urgency in the query, so keeping it simple and friendly feels right. \n\nI recall that some people confuse France's capital with other European cities (like Brussels for the EU), but that's overcomplicating it here. Just need to state Paris clearly and add a tiny bit of context—like mentioning it's also the largest city—to make it helpful without overwhelming them. \n\n...Wait, should I mention the Eiffel Tower? Nah, that's irrelevant unless they ask for landmarks. Stick to the point. \n\n*Double-checking*: Yep, Paris has been the capital since the 10th century, no recent changes. Solid answer.\n\n"},"logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":23,"total_tokens":337,"completion_tokens":314,"prompt_tokens_details":null},"prompt_logprobs":null,"prompt_token_ids":null,"kv_transfer_params":null}

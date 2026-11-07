@@ -1,0 +1,45 @@
+# Self-contained infra for the SCORES auto-escalation knowledge graph.
+# Neo4j is the default service (dev: `docker compose up -d neo4j`).
+# The KG API + UI can also be containerised via the `app` profile.
+services:
+  neo4j:
+    image: neo4j:5.23-community
+    container_name: sebi-kg-neo4j
+    ports:
+      - "7474:7474"   # HTTP browser
+      - "7687:7687"   # Bolt
+    environment:
+      NEO4J_AUTH: "neo4j/sebikg_dev_pw"
+      NEO4J_server_memory_heap_initial__size: "512m"
+      NEO4J_server_memory_heap_max__size: "1G"
+      NEO4J_server_memory_pagecache_size: "512m"
+    volumes:
+      - neo4j-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:7474 >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  kg-api:
+    profiles: ["app"]
+    build: .
+    container_name: sebi-kg-api
+    ports:
+      - "9010:9010"
+    env_file: .env
+    environment:
+      # inside the compose network Neo4j is reachable by service name
+      NEO4J_URI: "bolt://neo4j:7687"
+      # host-side Mongo port-forward is reachable via the docker host gateway
+      MONGO_URI: "mongodb://root:CHANGE_ME@host.docker.internal:27017/?directConnection=true"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  neo4j-data:

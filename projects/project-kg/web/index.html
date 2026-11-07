@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCORES — Systemic-Criticality Auto-Escalation</title>
+  <link rel="stylesheet" href="./styles.css?v=3" />
+  <script src="./vendor/cytoscape.min.js"></script>
+  <script src="./vendor/layout-base.js"></script>
+  <script src="./vendor/cose-base.js"></script>
+  <script src="./vendor/cytoscape-fcose.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo">◆</span> SCORES <span class="dim">Auto-Escalation</span></div>
+    <div class="top-controls">
+      <div class="seg" id="tier-filter">
+        <button data-tier="3">Critical</button>
+        <button data-tier="2" class="active">Priority+</button>
+        <button data-tier="1">Watch+</button>
+        <button data-tier="0">All</button>
+      </div>
+      <input id="search" type="text" placeholder="search entity / typology / #id" />
+    </div>
+    <div class="top-kpis" id="top-kpis"></div>
+  </header>
+
+  <div class="main3">
+    <aside class="left">
+      <div class="panel-head">Escalation Queue <span class="pill" id="queue-count"></span></div>
+      <div id="queue" class="cards"></div>
+    </aside>
+
+    <section class="center">
+      <div id="cy"></div>
+      <div class="legend" id="legend"></div>
+      <div class="graph-tools">
+        <button id="expand" title="expand graph (Esc to exit)">⛶</button>
+        <button id="zin" title="zoom in">+</button>
+        <button id="zout" title="zoom out">−</button>
+        <button id="zfit" title="fit">⤢</button>
+        <button id="relayout" title="re-layout">↻</button>
+      </div>
+      <div class="graph-hint" id="graph-hint">knowledge graph · click a node or a case</div>
+    </section>
+
+    <aside class="right">
+      <div class="tabs" id="tabs">
+        <button data-tab="clusters" class="active">Clusters</button>
+        <button data-tab="dimensions">Dimensions</button>
+        <button data-tab="entities">Entities</button>
+      </div>
+      <div id="tab-body" class="tab-body"></div>
+    </aside>
+  </div>
+
+  <div id="detail" class="detail"></div>
+
+  <button id="chatfab" title="Ask the knowledge graph">💬</button>
+  <div id="chatpanel" class="chatpanel">
+    <div class="chat-head">Ask the graph <span class="dim" style="font-weight:400;font-size:11px">GraphRAG · read-only</span><button id="chatclose" class="close">✕</button></div>
+    <div id="chatmsgs" class="chat-msgs"></div>
+    <div class="chat-suggest" id="chatsuggest"></div>
+    <div class="chat-input"><input id="chatq" type="text" placeholder="ask about complaints, entities, clusters…" /><button id="chatsend" title="send">↑</button></div>
+  </div>
+
+  <script src="./app.js?v=3"></script>
+</body>
+</html>

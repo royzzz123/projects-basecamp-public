@@ -1,0 +1,45 @@
+version: 1.2.1
+
+# ── MCP Servers ──────────────────────────────────────────────────────────────
+# LibreChat spawns each MCP server as a child process (stdio transport).
+# SEBI_MONGO_URI points at the port-forwarded MongoDB (SEBI-project DB).
+# Read-only mode so the LLM cannot mutate data.
+mcpServers:
+  sebi-mongo:
+    type: stdio
+    command: npx
+    args:
+      - -y
+      - "@mongodb-js/mongodb-mcp-server"
+    env:
+      MDB_MCP_CONNECTION_STRING: "${SEBI_MONGO_URI}"
+      MDB_MCP_READ_ONLY: "true"
+
+# ── Model endpoints ──────────────────────────────────────────────────────────
+# The OnFinance LLM gateway (port-forwarded to localhost:4000) exposes an
+# OpenAI-compatible /v1 API. From inside Docker we reach it via host.docker.internal.
+endpoints:
+  custom:
+    - name: "OnFinance LLM Gateway"
+      apiKey: "${LLM_GATEWAY_KEY}"
+      baseURL: "http://host.docker.internal:4000/v1"
+      models:
+        default:
+          - gpt-4o
+          - gpt-4o-mini
+        fetch: true
+      titleConvo: true
+      titleModel: "gpt-4o-mini"
+      modelDisplayLabel: "LLM Gateway"
+      dropParams:
+        - "user"
+
+# ── Interface defaults ────────────────────────────────────────────────────────
+interface:
+  mcpServers: true
+  bookmarks: false
+  multiConvo: false
+
+# ── Registration / access control ────────────────────────────────────────────
+registration:
+  socialLogins: []

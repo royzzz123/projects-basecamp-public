@@ -1,0 +1,1191 @@
+openapi: 3.0.3
+info:
+  title: project-crud API
+  version: 0.1.0
+  description: |
+    Auth surface for the project-crud service. The service follows the
+    conventions in CLAUDE.md: JSON error envelope, JWT (HS256) Bearer auth,
+    explicit RBAC (`developer` ⊇ `admin` ⊇ `business_user`).
+servers:
+  - url: http://localhost:8080
+    description: Local dev
+
+tags:
+  - name: auth
+    description: Authentication endpoints
+  - name: complaints
+    description: Investor complaints — list, filter metadata
+  - name: entities
+    description: Intermediary directory — typeahead for the complaint filter
+  - name: heatmap
+    description: Geographic complaint distribution derived from complaint codes
+  - name: dashboard
+    description: Aggregate complaint metrics (summary, volume by category/sub-category) with date + category filters
+  - name: complaint-workflow-analysis
+    description: AI-generated workflow analyses per complaint (store/retrieve)
+  - name: complaint-summary
+    description: AI-generated structured summaries per complaint (store/retrieve)
+  - name: ops
+    description: Operational endpoints (health, version, metrics)
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    systemKey:
+      type: apiKey
+      in: header
+      name: X-System-Key
+      description: |
+        Shared service-to-service secret. Configured via `SYSTEM_API_KEY` env
+        var. When present and valid, bypasses JWT auth and role enforcement
+        on every /v1 endpoint. Intended for trusted internal callers (e.g.,
+        the AI backend that produces workflow analyses).
+
+  schemas:
+    Role:
+      type: string
+      enum: [developer, admin, business_user]
+
+    UserResponse:
+      type: object
+      required: [id, email, role, created_at, updated_at]
+      properties:
+        id:         { type: string, example: "65fa3c..." }
+        email:      { type: string, format: email }
+        role:       { $ref: "#/components/schemas/Role" }
+        org_id:     { type: string, nullable: true, description: "Null for developer users; required otherwise." }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+
+    AuthResponse:
+      type: object
+      required: [token, expires_at, user]
+      properties:
+        token:      { type: string, description: "JWT (HS256). Send as `Authorization: Bearer <token>`." }
+        expires_at: { type: string, format: date-time }
+        user:       { $ref: "#/components/schemas/UserResponse" }
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:    { type: string, format: email }
+        password: { type: string, minLength: 1 }
+
+    SignupRequest:
+      type: object
+      required: [email, password, role]
+      properties:
+        email:    { type: string, format: email }
+        password: { type: string, minLength: 12, maxLength: 128 }
+        role:     { $ref: "#/components/schemas/Role" }
+        org_id:
+          type: string
+          nullable: true
+          description: |
+            Required when role is `admin` or `business_user` and the caller is a
+            developer. Ignored when the caller is an admin (the caller's own
+            org_id is used). Ignored when the new user's role is `developer`.
+
+    Error:
+      type: object
+      required: [error, request_id]
+      properties:
+        request_id: { type: string }
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:    { type: string, example: "auth.invalid_token" }
+            message: { type: string }
+            details: { type: object, additionalProperties: true }
+
+    ComplaintListItem:
+      type: object
+      required: [complaint_id, entityscreenid, sub_category, status, created_date, modified_date]
+      properties:
+        complaint_id:      { type: integer, format: int64, example: 1773175 }
+        entityscreenid:    { type: string, example: "stb10700" }
+        intermediary_name: { type: string, nullable: true, example: "HDFC SECURITIES LTD." }
+        category:          { type: string, nullable: true, example: "Stock Broker" }
+        sub_category:      { type: string, example: "Others" }
+        status:            { type: string, example: "CLOSED" }
+        created_date:      { type: string, format: date-time }
+        modified_date:     { type: string, format: date-time }
+
+    ComplaintListResponse:
+      type: object
+      required: [items, limit, total]
+      properties:
+        items:       { type: array, items: { $ref: "#/components/schemas/ComplaintListItem" } }
+        next_cursor: { type: string, nullable: true, description: "Opaque. Pass back as ?after=<value> for the next page." }
+        limit:       { type: integer, example: 50 }
+        total:       { type: integer, format: int64, example: 4123, description: "Count of complaints matching the request's filters across all pages (independent of `limit` and `after`)." }
+
+    CategoryOption:
+      type: object
+      required: [code, name]
+      properties:
+        code: { type: string, example: "cat12" }
+        name: { type: string, example: "Stock Broker" }
+
+    SubCategoryOption:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string, example: "Mis-appropriation of client's funds / securities" }
+
+    ComplaintFiltersResponse:
+      type: object
+      required: [statuses, categories, sub_categories]
+      properties:
+        statuses:       { type: array, items: { type: string } }
+        categories:     { type: array, items: { $ref: "#/components/schemas/CategoryOption" } }
+        sub_categories: { type: array, items: { $ref: "#/components/schemas/SubCategoryOption" } }
+
+    ComplaintDetailCategory:
+      type: object
+      required: [code, name]
+      properties:
+        code: { type: string, example: "cat12" }
+        name: { type: string, nullable: true, example: "Stock Broker" }
+
+    ComplaintDetailEntity:
+      type: object
+      required: [screen_id, name, type, category_code, category_name, registration_number]
+      properties:
+        screen_id:           { type: string, example: "stb10523" }
+        name:                { type: string, nullable: true, example: "HDFC SECURITIES LTD." }
+        type:                { type: string, nullable: true, example: "intermediary" }
+        category_code:       { type: string, nullable: true, example: "stock_broker" }
+        category_name:       { type: string, nullable: true, example: "Stock Broker" }
+        registration_number: { type: string, nullable: true, example: "INZ000186937" }
+
+    ComplaintStatusStep:
+      type: object
+      required: [state, reached_at, current]
+      properties:
+        state:      { type: string, example: "AWAITING_FOR_REVIEW" }
+        reached_at: { type: string, format: date-time, nullable: true, description: "First time the complaint entered this state. Null when derived from current_status with no matching log row." }
+        current:    { type: boolean, description: "True when this is the live wfstate." }
+
+    ComplaintActivityEntry:
+      type: object
+      required: [log_id, at, action, doc_urls]
+      properties:
+        log_id:                 { type: integer, format: int64, example: 6012115 }
+        at:                     { type: string, format: date-time }
+        role:                   { type: string, nullable: true, example: "Entity" }
+        action:                 { type: string, example: "ATR" }
+        wfstate:                { type: string, nullable: true, example: "START" }
+        remarks:                { type: string, nullable: true }
+        doc_urls:               { type: array, items: { type: string }, description: "Decoded from the JSON-encoded doc_url column on tr_complaints." }
+        current_assignee_role:  { type: string, nullable: true, example: "Investor" }
+
+    ComplaintDetailResponse:
+      type: object
+      required:
+        - complaint_id
+        - complaint_code
+        - complaint_details
+        - sub_category
+        - filed_date
+        - created_at
+        - updated_at
+        - current_status
+        - entity
+        - status_progression
+        - activity_timeline
+        - doc_urls
+      properties:
+        complaint_id:        { type: integer, format: int64, example: 1743319 }
+        complaint_code:      { type: string, example: "SEBIE/TN24/KANC/033849/3" }
+        complaint_details:   { type: string, example: "close to 52000 is missing in my account" }
+        sub_category:        { type: string, example: "Mis-appropriation of client's funds / securities" }
+        category:            { allOf: [ { $ref: "#/components/schemas/ComplaintDetailCategory" } ], nullable: true }
+        filed_date:          { type: string, format: date-time }
+        created_at:          { type: string, format: date-time, description: "Same as filed_date." }
+        updated_at:          { type: string, format: date-time, description: "Timestamp of the most recent workflow log row." }
+        closed_at:           { type: string, format: date-time, nullable: true, description: "date_of_closure on tt_complaints; null until the complaint is closed." }
+        time_taken_seconds:  { type: integer, format: int64, nullable: true, example: 3110372 }
+        time_taken_label:    { type: string, nullable: true, example: "36d 0h" }
+        current_status:      { type: string, example: "CLOSED" }
+        entity:              { $ref: "#/components/schemas/ComplaintDetailEntity" }
+        status_progression:  { type: array, items: { $ref: "#/components/schemas/ComplaintStatusStep" } }
+        activity_timeline:   { type: array, items: { $ref: "#/components/schemas/ComplaintActivityEntry" } }
+        doc_urls:            { type: array, items: { type: string }, description: "Union of every step's doc_urls in chronological order of first appearance, deduplicated." }
+
+    EntityListItem:
+      type: object
+      required: [id, name]
+      properties:
+        id:   { type: string, example: "stb10700", description: "Same as tt_complaints.entityscreenid" }
+        name: { type: string, example: "HDFC SECURITIES LTD." }
+
+    EntityListResponse:
+      type: object
+      required: [items, limit]
+      properties:
+        items:       { type: array, items: { $ref: "#/components/schemas/EntityListItem" } }
+        next_cursor: { type: string, nullable: true }
+        limit:       { type: integer, example: 20 }
+
+    EntityListWithCountsItem:
+      type: object
+      required:
+        - id
+        - entity
+        - entity_type
+        - total_complaints
+        - open_complaints
+        - closed_complaints
+        - first_level_review_escalated
+        - first_level_review_escalation_pct
+        - second_level_review_escalated
+        - second_level_review_escalation_pct
+      properties:
+        id:                  { type: string, example: "stb10700" }
+        entity:              { type: string, example: "HDFC SECURITIES LTD." }
+        entity_type:         { type: string, example: "intermediary", description: "e.g. \"intermediary\", \"listed\"" }
+        category:            { type: string, nullable: true, example: "Stock Broker", description: "Resolved from category_master; null when entity has no categorycode." }
+        registration_number: { type: string, nullable: true, example: "INZ000186937" }
+        total_complaints:    { type: integer, format: int64, example: 142 }
+        open_complaints:     { type: integer, format: int64, example: 12, description: "wfstate != \"CLOSED\"" }
+        closed_complaints:   { type: integer, format: int64, example: 130, description: "wfstate == \"CLOSED\"" }
+        first_level_review_escalated:
+          { type: integer, format: int64, example: 34, description: "Number of this entity's complaints whose workflow has at least one tr_complaints row with action == \"FIRST_LEVEL_REVIEW\"." }
+        first_level_review_escalation_pct:
+          { type: number, format: double, example: 23.94, description: "first_level_review_escalated / total_complaints * 100, rounded to 2 decimals. 0 when total_complaints is 0." }
+        second_level_review_escalated:
+          { type: integer, format: int64, example: 11, description: "Number of this entity's complaints whose workflow has at least one tr_complaints row with action == \"SECOND_LEVEL_REVIEW\"." }
+        second_level_review_escalation_pct:
+          { type: number, format: double, example: 7.75, description: "second_level_review_escalated / total_complaints * 100, rounded to 2 decimals. 0 when total_complaints is 0." }
+
+    EntityListWithCountsResponse:
+      type: object
+      required: [items, limit, total]
+      properties:
+        items:       { type: array, items: { $ref: "#/components/schemas/EntityListWithCountsItem" } }
+        next_cursor: { type: string, nullable: true }
+        limit:       { type: integer, example: 20 }
+        total:       { type: integer, format: int64, example: 873, description: "Count of entities matching the request's filters across all pages (independent of `limit` and `after`)." }
+
+    WorkflowAnalysisDocSummary:
+      type: object
+      required: [uuid]
+      properties:
+        uuid:              { type: string }
+        summary:           { type: string, nullable: true }
+        error:             { type: string, nullable: true }
+        ai_generated_name: { type: string, nullable: true, description: AI-generated display name for the document. }
+
+    WorkflowAnalysisEnrichedTimelineEntry:
+      type: object
+      required: [doc_summaries]
+      properties:
+        at:                    { type: string, format: date-time, nullable: true }
+        role:                  { type: string, nullable: true }
+        action:                { type: string, nullable: true }
+        wfstate:               { type: string, nullable: true }
+        remarks:               { type: string, nullable: true }
+        current_assignee_role: { type: string, nullable: true }
+        doc_summaries:         { type: array, items: { $ref: "#/components/schemas/WorkflowAnalysisDocSummary" } }
+
+    WorkflowAnalysisAssessment:
+      type: object
+      properties:
+        timeline_quality:              { type: string, nullable: true }
+        entity_conduct:                { type: string, nullable: true }
+        investor_grievance_assessment: { type: string, nullable: true }
+        overall_summary:               { type: string, nullable: true }
+
+    WorkflowAnalysis:
+      type: object
+      required: [complaint_id, enriched_timeline, workflow_analysis, created_at, updated_at]
+      properties:
+        complaint_id:      { type: integer, format: int64, example: 1743319 }
+        complaint_code:    { type: string, nullable: true }
+        category:          { type: string, nullable: true }
+        sub_category:      { type: string, nullable: true }
+        entity_name:       { type: string, nullable: true }
+        filed_at:          { type: string, format: date-time, nullable: true }
+        closed_at:         { type: string, format: date-time, nullable: true }
+        time_taken_label:  { type: string, nullable: true }
+        current_status:    { type: string, nullable: true }
+        enriched_timeline: { type: array, items: { $ref: "#/components/schemas/WorkflowAnalysisEnrichedTimelineEntry" } }
+        workflow_analysis: { $ref: "#/components/schemas/WorkflowAnalysisAssessment" }
+        created_at:        { type: string, format: date-time, description: "Set on the first upsert; preserved across subsequent updates." }
+        updated_at:        { type: string, format: date-time }
+
+    WorkflowAnalysisStoreRequest:
+      type: object
+      required: [enriched_timeline, workflow_analysis]
+      properties:
+        complaint_code:    { type: string, nullable: true }
+        category:          { type: string, nullable: true }
+        sub_category:      { type: string, nullable: true }
+        entity_name:       { type: string, nullable: true }
+        filed_at:          { type: string, format: date-time, nullable: true }
+        closed_at:         { type: string, format: date-time, nullable: true }
+        time_taken_label:  { type: string, nullable: true }
+        current_status:    { type: string, nullable: true }
+        enriched_timeline: { type: array, items: { $ref: "#/components/schemas/WorkflowAnalysisEnrichedTimelineEntry" } }
+        workflow_analysis: { $ref: "#/components/schemas/WorkflowAnalysisAssessment" }
+
+    ComplaintSummaryPayload:
+      type: object
+      required: [brief_summary, concise_summary, key_issues, demands, sentiment]
+      properties:
+        brief_summary:   { type: string, example: "Investor escalated repeatedly; entity unresponsive." }
+        concise_summary: { type: string, description: One-line summary of the complaint., example: "Entity ignored investor's repeated refund requests." }
+        key_issues:    { type: array, items: { type: string }, example: ["escalation channels unreachable", "fake call-back promises"] }
+        demands:       { type: array, items: { type: string }, example: ["Rs. 2000/day delay penalty", "Rs. 10,00,000 compensation"] }
+        sentiment:     { type: string, example: "frustrated" }
+
+    ComplaintSummary:
+      type: object
+      required: [complaint_id, complaint_details, summary, created_at, updated_at]
+      properties:
+        complaint_id:      { type: integer, format: int64, example: 123 }
+        complaint_code:    { type: string, nullable: true, example: "SCORES/2024/XXXX" }
+        category:          { type: string, nullable: true }
+        sub_category:      { type: string, nullable: true }
+        entity_name:       { type: string, nullable: true }
+        filed_at:          { type: string, format: date-time, nullable: true }
+        complaint_details: { type: string, description: "Original raw complaint text from the investor." }
+        summary:           { $ref: "#/components/schemas/ComplaintSummaryPayload" }
+        created_at:        { type: string, format: date-time, description: "Set on the first upsert; preserved across subsequent updates." }
+        updated_at:        { type: string, format: date-time }
+
+    ComplaintSummaryStoreRequest:
+      type: object
+      required: [complaint_details, summary]
+      properties:
+        complaint_code:    { type: string, nullable: true }
+        category:          { type: string, nullable: true }
+        sub_category:      { type: string, nullable: true }
+        entity_name:       { type: string, nullable: true }
+        filed_at:          { type: string, format: date-time, nullable: true }
+        complaint_details: { type: string }
+        summary:           { $ref: "#/components/schemas/ComplaintSummaryPayload" }
+
+    StateCount:
+      type: object
+      required: [state_code, state_name, complaints]
+      properties:
+        state_code: { type: string, example: "UP", description: "Canonical 2-letter Indian state/UT code." }
+        state_name: { type: string, example: "Uttar Pradesh" }
+        complaints: { type: integer, format: int64, example: 152 }
+
+    StateHeatmapResponse:
+      type: object
+      required: [items, total, unresolved_complaints]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/StateCount" }, description: "Every state/UT, zero-filled, sorted by complaint count descending." }
+        total: { type: integer, format: int64, example: 4123, description: "All complaints whose code yielded a state segment." }
+        unresolved_complaints: { type: integer, format: int64, example: 0, description: "Complaints whose 2-letter code did not map to a known state." }
+
+    DistrictCount:
+      type: object
+      required: [district_code, district_name, complaints]
+      properties:
+        district_code: { type: string, example: "GOND", description: "First 4 letters of the district, as encoded in the complaint code." }
+        district_name: { type: string, example: "Gonda" }
+        complaints:    { type: integer, format: int64, example: 12 }
+        ambiguous:     { type: boolean, example: false, description: "True when the 4-letter code matches several districts in the state; district_name is then the first candidate." }
+
+    StateDrilldownResponse:
+      type: object
+      required: [state_code, state_name, total_complaints, districts, unresolved]
+      properties:
+        state_code:       { type: string, example: "UP" }
+        state_name:       { type: string, example: "Uttar Pradesh" }
+        total_complaints: { type: integer, format: int64, example: 152 }
+        districts:        { type: array, items: { $ref: "#/components/schemas/DistrictCount" }, description: "Resolved districts, sorted by complaint count descending." }
+        unresolved:       { type: array, items: { $ref: "#/components/schemas/DistrictCount" }, description: "District codes that did not match a known district (district_name empty)." }
+
+    DashboardSummaryResponse:
+      type: object
+      required: [total, open, closed, resolution_rate]
+      description: |
+        Cohort-progress model — the cohort is complaints FILED in the date range
+        (created_date; all-time when no range) after the `category` filter:
+        `total` = complaints filed in the window;
+        `closed` = of those, the ones that ALSO closed within the same window
+        (date_of_closure in range; currently-closed when no range);
+        `open` = total - closed (filed in the window but not closed within it).
+        So `total == open + closed`.
+      properties:
+        total:           { type: integer, format: int64, example: 6626 }
+        open:            { type: integer, format: int64, example: 5188 }
+        closed:          { type: integer, format: int64, example: 1438 }
+        resolution_rate: { type: number, format: double, example: 21.7, description: "closed/total*100, rounded to 2dp (0 when total is 0): within-period closure rate — of the window's filed complaints, the share also closed within it." }
+
+    SubcategoryCount:
+      type: object
+      required: [sub_category, complaints]
+      properties:
+        sub_category: { type: string, example: "Others" }
+        complaints:   { type: integer, format: int64, example: 523 }
+
+    DashboardSubcategoryVolumeResponse:
+      type: object
+      required: [items, total, limit]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/SubcategoryCount" }, description: "Top sub-categories by filed-complaint volume, sorted descending, capped at limit." }
+        total: { type: integer, format: int64, example: 12345, description: "Full matched complaint count (>= the sum of the returned items)." }
+        limit: { type: integer, example: 50 }
+
+    CategoryCount:
+      type: object
+      required: [category_code, category_name, complaints]
+      properties:
+        category_code: { type: string, example: "cat12" }
+        category_name: { type: string, example: "Stock Broker", description: "Resolved from category_master; empty when the code has no master entry." }
+        complaints:    { type: integer, format: int64, example: 900 }
+
+    DashboardCategoryVolumeResponse:
+      type: object
+      required: [items, total]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/CategoryCount" }, description: "Every category present in the window, sorted by complaint count descending." }
+        total: { type: integer, format: int64, example: 12345 }
+
+    DashboardTrendPoint:
+      type: object
+      required: [date, count]
+      properties:
+        date:  { type: string, example: "2024-09-02", description: "Bucket start as YYYY-MM-DD (Monday for week, 1st for month)." }
+        count: { type: integer, format: int64, example: 42 }
+
+    DashboardCategoryTrendSeries:
+      type: object
+      required: [category_code, category_name, total, points]
+      properties:
+        category_code: { type: string, example: "cat12" }
+        category_name: { type: string, example: "Stock Broker" }
+        total:         { type: integer, format: int64, example: 6117, description: "Sum of all points in the series." }
+        points:        { type: array,   items: { $ref: "#/components/schemas/DashboardTrendPoint" }, description: "Non-zero buckets only, sorted ascending by date. Frontend builds the full axis from its request range and zero-fills gaps." }
+
+    DashboardCategoryTrendResponse:
+      type: object
+      required: [granularity, series]
+      properties:
+        granularity: { type: string, enum: [day, week, month], example: "day" }
+        series:      { type: array, items: { $ref: "#/components/schemas/DashboardCategoryTrendSeries" }, description: "Sorted by total descending (so the largest stack on top in a typical area chart)." }
+
+    DashboardSubcategoryTrendSeries:
+      type: object
+      required: [sub_category, total, points]
+      properties:
+        sub_category: { type: string, example: "Lack of response from RTA / Improper service", description: "Free-form sub-category from the complaint (`\"\"` when missing — no master-table lookup)." }
+        total:        { type: integer, format: int64, example: 312 }
+        points:       { type: array, items: { $ref: "#/components/schemas/DashboardTrendPoint" }, description: "Non-zero buckets only, sorted ascending by date." }
+
+    DashboardSubcategoryTrendResponse:
+      type: object
+      required: [granularity, series, limit]
+      properties:
+        granularity: { type: string, enum: [day, week, month], example: "day" }
+        series:      { type: array, items: { $ref: "#/components/schemas/DashboardSubcategoryTrendSeries" }, description: "Sorted by total descending, capped at `limit`." }
+        limit:       { type: integer, example: 50, description: "Effective top-N cap actually applied (after clamping)." }
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid token
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Forbidden:
+      description: Authenticated but lacks the required role
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    ValidationError:
+      description: Request body failed validation
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Conflict:
+      description: Resource already exists
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+paths:
+  /v1/auth/login:
+    post:
+      tags: [auth]
+      summary: Exchange email + password for a JWT
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LoginRequest" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401":
+          description: Invalid credentials (same response for "no such email" — no user enumeration)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /v1/auth/signup:
+    post:
+      tags: [auth]
+      summary: Create a new user (admin or developer only)
+      description: |
+        There is no public signup. Caller must be authenticated and have role
+        `admin` or `developer`. An admin can only create users with role
+        `admin` or `business_user` in their own org. A developer can create
+        any role, including other developers.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SignupRequest" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  /v1/auth/me:
+    get:
+      tags: [auth]
+      summary: Return the authenticated caller's user record
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserResponse" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404":
+          description: User has been deleted
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /health:
+    get:
+      tags: [ops]
+      summary: Liveness
+      security: []
+      responses:
+        "200": { description: Service is up }
+
+  /readyz:
+    get:
+      tags: [ops]
+      summary: Readiness (pings Mongo)
+      security: []
+      responses:
+        "200": { description: Ready }
+        "503": { description: Not ready (Mongo unreachable) }
+
+  /version:
+    get:
+      tags: [ops]
+      summary: Build info (version, commit, build_time)
+      security: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:    { type: string }
+                  commit:     { type: string }
+                  build_time: { type: string }
+
+  /metrics:
+    get:
+      tags: [ops]
+      summary: Prometheus metrics
+      security: []
+      responses:
+        "200":
+          description: Prometheus exposition format
+          content:
+            text/plain: {}
+
+  /v1/complaints:
+    get:
+      tags: [complaints]
+      summary: List complaints (paginated, filterable)
+      description: |
+        Cursor-paginated. Multi-value filter axes use repeated query keys
+        (`?status=CLOSED&status=START`). Values within an axis are OR-combined;
+        axes are AND-combined. `intermediary_name` is not a filter param — use
+        `entityscreenid` (the UI's intermediary dropdown is populated by
+        `GET /v1/entities` and sends back one or more IDs).
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 200 }
+          description: "Defaults to COMPLAINTS_PAGE_DEFAULT (50); clamped to COMPLAINTS_PAGE_MAX (200)."
+        - in: query
+          name: after
+          schema: { type: string }
+          description: "Opaque cursor from a prior `next_cursor`."
+        - in: query
+          name: entityscreenid
+          schema: { type: array, items: { type: string } }
+          style: form
+          explode: true
+        - in: query
+          name: status
+          schema: { type: array, items: { type: string } }
+          style: form
+          explode: true
+        - in: query
+          name: category
+          schema: { type: array, items: { type: string } }
+          style: form
+          explode: true
+          description: "SEBI category code, e.g. `cat12`."
+        - in: query
+          name: sub_category
+          schema: { type: array, items: { type: string } }
+          style: form
+          explode: true
+        - in: query
+          name: created_at_from
+          schema: { type: string, format: date-time }
+        - in: query
+          name: created_at_to
+          schema: { type: string, format: date-time }
+        - in: query
+          name: modified_at_from
+          schema: { type: string, format: date-time }
+        - in: query
+          name: modified_at_to
+          schema: { type: string, format: date-time }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ComplaintListResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/complaints/filters:
+    get:
+      tags: [complaints]
+      summary: Reference data for the filter drawer (statuses, categories, sub-categories)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ComplaintFiltersResponse" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/complaints/{complaint_id}:
+    get:
+      tags: [complaints]
+      summary: Complaint detail with status progression and activity timeline
+      description: |
+        Returns the full detail view for a single complaint. Joins the entity
+        and category lookups, fetches every `tr_complaints` workflow row,
+        derives the `status_progression` (unique wfstates in chronological
+        order), flattens all attachment IDs into `doc_urls`, and (when
+        closed) computes `time_taken_seconds` / `time_taken_label`.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: complaint_id
+          required: true
+          schema: { type: integer, format: int64, minimum: 1 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ComplaintDetailResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404":
+          description: Complaint not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /v1/heatmap:
+    get:
+      tags: [heatmap]
+      summary: Complaint counts per state/UT (choropleth source)
+      description: |
+        Aggregates every complaint by the 2-letter state code embedded in its
+        `complaint_code` (segment 1, e.g. `UP24` → `UP`), resolves the code to a
+        state name, and returns one row per state/UT — zero-filled so a map can
+        colour every region. Alias spellings (e.g. `TS`/`TG`) are folded
+        together. This is a choropleth source (regions shaded by count), not a
+        point heatmap.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StateHeatmapResponse" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/heatmap/{state_code}:
+    get:
+      tags: [heatmap]
+      summary: Per-district complaint breakdown for one state (drill-down)
+      description: |
+        Drill-down for a single state: the state total plus per-district counts,
+        resolved from segment 2 of the complaint code (the first 4 letters of the
+        district, e.g. `GOND` → Gonda). Because that prefix can be shared by
+        several districts in a state, such rows are flagged `ambiguous`. District
+        codes with no match appear under `unresolved`.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: state_code
+          required: true
+          schema: { type: string, example: "UP" }
+          description: "Canonical or alias 2-letter state code (case-insensitive)."
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StateDrilldownResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/dashboard/summary:
+    get:
+      tags: [dashboard]
+      summary: Headline counts — total, open, closed, resolution rate
+      description: |
+        Cohort-progress view. Counts the complaints FILED in the window
+        (created_date; all-time when no range), then within that cohort counts
+        the ones that ALSO closed within the same window (date_of_closure in
+        range) as `closed`; `open` = total - closed. So `total == open + closed`
+        and `resolution_rate` = closed/total*100 is the within-period closure
+        rate. With no date range, `closed` is the currently-closed count. The
+        `category` filter scopes the cohort.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: category
+          schema: { type: array, items: { type: string } }
+          style: form
+          explode: true
+          description: "SEBI category code(s), e.g. `cat12`. OR-combined."
+        - in: query
+          name: created_at_from
+          schema: { type: string, format: date-time }
+        - in: query
+          name: created_at_to
+          schema: { type: string, format: date-time }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DashboardSummaryResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/dashboard/volume-by-subcategory:
+    get:
+      tags: [dashboard]
+      summary: Filed-complaint volume grouped by sub-category (top-N)
+      description: |
+        Groups complaints filed in the window (created_date) by
+        `complaint_sub_category`, sorted by count descending and capped at
+        `limit`. `total` is the full matched count, independent of `limit`.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 200 }
+          description: "Defaults to DASHBOARD_SUBCAT_LIMIT_DEFAULT (50); clamped to DASHBOARD_SUBCAT_LIMIT_MAX (200)."
+        - in: query
+          name: category
+          schema: { type: array, items: { type: string } }
+          style: form
+          explode: true
+          description: "SEBI category code(s), e.g. `cat12`. OR-combined."
+        - in: query
+          name: created_at_from
+          schema: { type: string, format: date-time }
+        - in: query
+          name: created_at_to
+          schema: { type: string, format: date-time }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DashboardSubcategoryVolumeResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/dashboard/volume-by-category:
+    get:
+      tags: [dashboard]
+      summary: Filed-complaint volume grouped by category
+      description: |
+        Groups complaints filed in the window (created_date) by
+        `complaint_category`, resolving the category name from category_master,
+        sorted by count descending. No category filter — category is the group
+        key; only the date range applies.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: created_at_from
+          schema: { type: string, format: date-time }
+        - in: query
+          name: created_at_to
+          schema: { type: string, format: date-time }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DashboardCategoryVolumeResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/dashboard/volume-by-subcategory-trend:
+    get:
+      tags: [dashboard]
+      summary: Filed-complaint volume per (bucket, sub_category) for stacked-time-series rendering
+      description: |
+        Sub-category cousin of /v1/dashboard/volume-by-category-trend. Groups
+        complaints filed in the window by (bucket, complaint_sub_category),
+        where bucket is created_date truncated to the requested granularity
+        ("day" | "week" | "month"). Series sorted by total descending, capped
+        at `limit`. Optional `category` filter scopes the contributing
+        complaints (useful when the dashboard's category multi-select is active).
+
+        Sub-categories are free-form strings on the complaint — there is no
+        master-table lookup, so unlike `volume-by-category-trend` there is no
+        resolved name field, only `sub_category`.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: created_at_from
+          schema: { type: string, format: date-time }
+        - in: query
+          name: created_at_to
+          schema: { type: string, format: date-time }
+        - in: query
+          name: granularity
+          schema: { type: string, enum: [day, week, month], default: day }
+        - in: query
+          name: category
+          description: SEBI category code(s). Repeatable; OR-combined.
+          schema:
+            type: array
+            items: { type: string }
+          style: form
+          explode: true
+        - in: query
+          name: limit
+          schema: { type: integer, default: 50, description: "Defaults / max from DASHBOARD_SUBCAT_LIMIT_*; clamped." }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DashboardSubcategoryTrendResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/dashboard/volume-by-category-trend:
+    get:
+      tags: [dashboard]
+      summary: Filed-complaint volume per (bucket, category) for stacked-time-series rendering
+      description: |
+        Groups complaints filed in the window (created_date) by (bucket, complaint_category),
+        where bucket is created_date truncated to the requested granularity
+        ("day" | "week" | "month"). Series are sorted by total descending; each
+        series' points are sorted by bucket ascending and only non-zero buckets
+        are returned — the frontend builds its own date axis from the request
+        range and zero-fills missing buckets.
+
+        Optional `category` filter narrows the result to specific category codes
+        (repeatable). Unlike `volume-by-category`, category is **not** the only
+        group key — it is one half of the composite group, so filtering by
+        category is meaningful here.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: created_at_from
+          schema: { type: string, format: date-time }
+        - in: query
+          name: created_at_to
+          schema: { type: string, format: date-time }
+        - in: query
+          name: granularity
+          schema: { type: string, enum: [day, week, month], default: day }
+        - in: query
+          name: category
+          description: SEBI category code(s). Repeatable; OR-combined.
+          schema:
+            type: array
+            items: { type: string }
+          style: form
+          explode: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DashboardCategoryTrendResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/entities:
+    get:
+      tags: [entities]
+      summary: Full entity list with rolled-up complaint counts
+      description: |
+        Paginated entity table. Each row carries `total / open / closed` complaint
+        counts derived from `tt_complaints` plus first- and second-level review
+        escalation counts and percentages derived from `tr_complaints` actions
+        (one round-trip per page covers all of these). Includes both
+        intermediaries and listed companies — listed companies have `category`
+        and `registration_number` = null. Sort is `(complaint_count DESC, uid
+        DESC)`; cursor encodes the last `(complaint_count, uid)`.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 50 }
+          description: "Defaults to ENTITY_LIST_PAGE_DEFAULT (20); clamped to ENTITY_LIST_PAGE_MAX (50)."
+        - in: query
+          name: after
+          schema: { type: string }
+          description: "Opaque cursor from a prior `next_cursor`."
+        - in: query
+          name: category
+          schema: { type: array, items: { type: string } }
+          style: form
+          explode: true
+          description: "SEBI category code, e.g. `cat12`. Repeatable (OR within axis)."
+        - in: query
+          name: entity_type
+          schema: { type: array, items: { type: string } }
+          style: form
+          explode: true
+          description: "e.g. `intermediary`, `listed`. Repeatable (OR within axis)."
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EntityListWithCountsResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/entities/filter:
+    get:
+      tags: [entities]
+      summary: Paginated, prefix-searchable intermediary typeahead (filter dropdown source)
+      description: |
+        Drives the intermediary dropdown on the complaints filter drawer. `q`
+        is an anchored case-insensitive prefix match on the entity name; empty
+        `q` returns the alphabetical page. Sort is `userid ASC`; cursor encodes
+        the last `userid`. `/v1/entities` and `/v1/entities/{id}` are reserved
+        for the full entity list / detail endpoints.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+          description: "Anchored prefix (case-insensitive)."
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 100 }
+          description: "Defaults to ENTITIES_PAGE_DEFAULT (20); clamped to ENTITIES_PAGE_MAX (100)."
+        - in: query
+          name: after
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/EntityListResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/complaint-workflow-analysis/{complaint_id}:
+    get:
+      tags: [complaint-workflow-analysis]
+      summary: Fetch the stored workflow analysis for a complaint
+      description: |
+        Returns the stored analysis or 404 if none exists yet. The AI backend
+        calls this first to decide whether to (re)generate.
+      security:
+        - bearerAuth: []
+        - systemKey: []
+      parameters:
+        - in: path
+          name: complaint_id
+          required: true
+          schema: { type: integer, format: int64, minimum: 1 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/WorkflowAnalysis" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404":
+          description: No analysis stored for this complaint
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    post:
+      tags: [complaint-workflow-analysis]
+      summary: Store (upsert) the workflow analysis for a complaint
+      description: |
+        Idempotent upsert keyed by `complaint_id` in the path. The first call
+        sets `created_at`; subsequent calls overwrite content + `updated_at`
+        and preserve `created_at`. Requires `developer` role when called with
+        a JWT, or a valid `X-System-Key` header (the path the AI backend uses).
+      security:
+        - bearerAuth: []
+        - systemKey: []
+      parameters:
+        - in: path
+          name: complaint_id
+          required: true
+          schema: { type: integer, format: int64, minimum: 1 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/WorkflowAnalysisStoreRequest" }
+      responses:
+        "200":
+          description: Stored. Returns the persisted analysis (including timestamps).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/WorkflowAnalysis" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /v1/complaint-summary/{complaint_id}:
+    get:
+      tags: [complaint-summary]
+      summary: Fetch the stored AI summary for a complaint
+      description: |
+        Returns the stored summary or 404 if none exists yet. The AI backend
+        calls this first to decide whether to (re)generate.
+      security:
+        - bearerAuth: []
+        - systemKey: []
+      parameters:
+        - in: path
+          name: complaint_id
+          required: true
+          schema: { type: integer, format: int64, minimum: 1 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ComplaintSummary" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404":
+          description: No summary stored for this complaint
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    post:
+      tags: [complaint-summary]
+      summary: Store (upsert) the AI summary for a complaint
+      description: |
+        Idempotent upsert keyed by `complaint_id` in the path. The first call
+        sets `created_at`; subsequent calls overwrite content + `updated_at`
+        and preserve `created_at`. Requires `developer` role when called with
+        a JWT, or a valid `X-System-Key` header (the path the AI backend uses).
+      security:
+        - bearerAuth: []
+        - systemKey: []
+      parameters:
+        - in: path
+          name: complaint_id
+          required: true
+          schema: { type: integer, format: int64, minimum: 1 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ComplaintSummaryStoreRequest" }
+      responses:
+        "200":
+          description: Stored. Returns the persisted summary (including timestamps).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ComplaintSummary" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+security:
+  - bearerAuth: []
+  - systemKey: []

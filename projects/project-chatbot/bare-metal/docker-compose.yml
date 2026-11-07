@@ -1,0 +1,24 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# ADD this service block to the existing docker-compose.yml on 0.6.
+# It must go under `services:` alongside sebi-ai, bifrost, etc.
+# Uses the same sebi.env and the same `agents` network that already exist.
+#
+# After adding, bring only the chatbot up without touching other services:
+#     docker compose --env-file sebi.env up -d sebi-chat
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  sebi-chat:
+    image: sebi-chat:bare-metal
+    restart: unless-stopped
+    env_file: [sebi.env]
+    environment:
+      APP_PORT: "3001"
+      # Override LLM to Nemotron-120B — it supports tool calling; Llama token is expired.
+      # Other services on 0.6 (sebi-ai, bifrost, etc.) keep their own LLM_LLAMA_70B_* from sebi.env.
+      LLM_LLAMA_70B_URL: "https://apis.airawat.cdac.in/msebisec/nemotron3-120bbf16/v1/chat/completions"
+      LLM_LLAMA_70B_BEARER_TOKEN: "${LLM_BEARER_TOKEN}"   # set LLM_BEARER_TOKEN in sebi.env
+      LLM_LLAMA_70B_MODEL_ID: "nvidia/nemotron-3-super"
+    ports:
+      - "8002:3001"
+    networks: [agents]

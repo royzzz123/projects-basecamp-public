@@ -1,0 +1,15 @@
+node_modules
+dist
+.output
+.vinxi
+pnpm-lock.yaml
+package-lock.json
+routeTree.gen.ts
+
+# Large generated / third-party assets that don't benefit from prettier
+public/india-districts.json
+public/india-states.json
+public/pdf.worker.min.js
+
+# Local lovable scratchpad — not source
+.lovable/

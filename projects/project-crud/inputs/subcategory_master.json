@@ -1,0 +1,671 @@
+[
+  {
+    "sub_category_name": "Accessibility related issues faced by Person with Disabilities"
+  },
+  {
+    "sub_category_name": "Account opened in another name than as requested"
+  },
+  {
+    "sub_category_name": "Account opening / closing / suspension related"
+  },
+  {
+    "sub_category_name": "Advertisement related"
+  },
+  {
+    "sub_category_name": "Allotment of SDI at wrong NAV"
+  },
+  {
+    "sub_category_name": "Allotment of Units at wrong NAV"
+  },
+  {
+    "sub_category_name": "Application not appearing in the bid file"
+  },
+  {
+    "sub_category_name": "Application related"
+  },
+  {
+    "sub_category_name": "Assured return being offered"
+  },
+  {
+    "sub_category_name": "Blocking/Unblocking amount under ASBA"
+  },
+  {
+    "sub_category_name": "Book-building related"
+  },
+  {
+    "sub_category_name": "Breaches in clauses of PMS agreements"
+  },
+  {
+    "sub_category_name": "CAS related"
+  },
+  {
+    "sub_category_name": "Charges for Opening/closure of Account"
+  },
+  {
+    "sub_category_name": "Charges related"
+  },
+  {
+    "sub_category_name": "Charging excess fee"
+  },
+  {
+    "sub_category_name": "Charging of Fees in excess of limits prescribed in  Agreement"
+  },
+  {
+    "sub_category_name": "Clearing, Settlement and Delivery"
+  },
+  {
+    "sub_category_name": "Closing off / squaring up position without consent"
+  },
+  {
+    "sub_category_name": "Closure of account without intimation by DP"
+  },
+  {
+    "sub_category_name": "Collecting amount other than advisory fee"
+  },
+  {
+    "sub_category_name": "Collecting amount other than research report/recommendation fee"
+  },
+  {
+    "sub_category_name": "Collective Investment Scheme"
+  },
+  {
+    "sub_category_name": "Competition Commission Of India"
+  },
+  {
+    "sub_category_name": "Competition Commission of India"
+  },
+  {
+    "sub_category_name": "Complaints against issuers /promoters/directors"
+  },
+  {
+    "sub_category_name": "Complaints related to self-certified syndicate bankers (ASBA)"
+  },
+  {
+    "sub_category_name": "Complaints related to self-certified syndicate banks (ASBA)"
+  },
+  {
+    "sub_category_name": "Conflict of Interest"
+  },
+  {
+    "sub_category_name": "Conflict of interest related"
+  },
+  {
+    "sub_category_name": "Connectivity / system related problem"
+  },
+  {
+    "sub_category_name": "Contravention of IM/ PPM/ PM/ OD terms"
+  },
+  {
+    "sub_category_name": "Contravention of PPM terms"
+  },
+  {
+    "sub_category_name": "Corporate benefits related"
+  },
+  {
+    "sub_category_name": "Credit Rating Agencies"
+  },
+  {
+    "sub_category_name": "Data Entry Error"
+  },
+  {
+    "sub_category_name": "De-freezing related"
+  },
+  {
+    "sub_category_name": "Deactivation / Freezing/ Suspension related"
+  },
+  {
+    "sub_category_name": "Deactivation/ Freezing/ Suspension related"
+  },
+  {
+    "sub_category_name": "Defaulter Broker claims"
+  },
+  {
+    "sub_category_name": "Delay / Non  execution of Switch/ SWP"
+  },
+  {
+    "sub_category_name": "Delay in / Non-Execution of DIS"
+  },
+  {
+    "sub_category_name": "Delay in Dematerialisation request processing"
+  },
+  {
+    "sub_category_name": "Delay in Issuance / Re-issuance of DIS Booklet"
+  },
+  {
+    "sub_category_name": "Delay in Registration"
+  },
+  {
+    "sub_category_name": "Delay in Rematerialisation request processing"
+  },
+  {
+    "sub_category_name": "Delay in activation/ opening of account"
+  },
+  {
+    "sub_category_name": "Delay in delivery"
+  },
+  {
+    "sub_category_name": "Delay in listing or non-listing after IPO"
+  },
+  {
+    "sub_category_name": "Delay in listing/Non-listing after IPO"
+  },
+  {
+    "sub_category_name": "Delay in payment"
+  },
+  {
+    "sub_category_name": "Delay in processing / Non-acceptance of Demat request"
+  },
+  {
+    "sub_category_name": "Delay in processing / Non-acceptance of Remat request"
+  },
+  {
+    "sub_category_name": "Delay in processing / Non-acceptance of change in KYC details"
+  },
+  {
+    "sub_category_name": "Delay in processing/ Non-acceptance of Demat request"
+  },
+  {
+    "sub_category_name": "Delay in processing/ Non-acceptance of Remat request"
+  },
+  {
+    "sub_category_name": "Delay in receipt of CAS"
+  },
+  {
+    "sub_category_name": "Delay in receipt of SDI"
+  },
+  {
+    "sub_category_name": "Delay in receipt of securities"
+  },
+  {
+    "sub_category_name": "Delay in/ Non-Receipt of Original certificate after demat rejection"
+  },
+  {
+    "sub_category_name": "Delay in/ Non-Receipt of Statements from DP"
+  },
+  {
+    "sub_category_name": "Delay/ Non-receipt of Interest on delayed payment of Redemption"
+  },
+  {
+    "sub_category_name": "Delay/ Non-receipt of Interest on delayed payment of interest on SDI"
+  },
+  {
+    "sub_category_name": "Delay/ Non-receipt of Redemption Proceeds of SDI"
+  },
+  {
+    "sub_category_name": "Delay/Non receipt of quarterly reports"
+  },
+  {
+    "sub_category_name": "Delay/Non receipt of redemption Amount"
+  },
+  {
+    "sub_category_name": "Delay/Non-receipt of Buy back consideration"
+  },
+  {
+    "sub_category_name": "Delay/Non-receipt of Interest on delayed payment of Dividend"
+  },
+  {
+    "sub_category_name": "Delay/Non-receipt of Interest on delayed payment of Redemption"
+  },
+  {
+    "sub_category_name": "Delay/Non-receipt of Redemption Proceeds"
+  },
+  {
+    "sub_category_name": "Delay/Non-receipt of delisting consideration"
+  },
+  {
+    "sub_category_name": "Delay/Non-receipt of funds"
+  },
+  {
+    "sub_category_name": "Delay/non-disclosure of TER change"
+  },
+  {
+    "sub_category_name": "Denial in opening an account"
+  },
+  {
+    "sub_category_name": "Depository participant default related"
+  },
+  {
+    "sub_category_name": "Deviation from scheme attributes"
+  },
+  {
+    "sub_category_name": "Disclosure from Exchanges"
+  },
+  {
+    "sub_category_name": "Discrepancy in Statement of Account"
+  },
+  {
+    "sub_category_name": "Discrepancy in Transaction statement"
+  },
+  {
+    "sub_category_name": "Dispute in Auction value / close out value"
+  },
+  {
+    "sub_category_name": "ESOP related"
+  },
+  {
+    "sub_category_name": "Excess brokerage"
+  },
+  {
+    "sub_category_name": "Excess/ irrelevant documents sought for duplicate share certificates"
+  },
+  {
+    "sub_category_name": "Excess/ irrelevant documents sought for transfer"
+  },
+  {
+    "sub_category_name": "Excess/ irrelevant documents sought for transmission"
+  },
+  {
+    "sub_category_name": "Failure to process ASBA application"
+  },
+  {
+    "sub_category_name": "Failure to stop SIP after intimation"
+  },
+  {
+    "sub_category_name": "Fees and expense related"
+  },
+  {
+    "sub_category_name": "Fraudulent transfer/demat of shares by RTA"
+  },
+  {
+    "sub_category_name": "IGRC / Conciliation / Arbitration related to Brokers"
+  },
+  {
+    "sub_category_name": "IGRC / Conciliation / Arbitration related to Depository Participants"
+  },
+  {
+    "sub_category_name": "IGRC / Reconcilation / Arbitration retated to Brokers"
+  },
+  {
+    "sub_category_name": "INVIT"
+  },
+  {
+    "sub_category_name": "IPO Application related"
+  },
+  {
+    "sub_category_name": "IPO related"
+  },
+  {
+    "sub_category_name": "Improper Research Report / buy/sell recommendation"
+  },
+  {
+    "sub_category_name": "Improper Service"
+  },
+  {
+    "sub_category_name": "Improper agreement"
+  },
+  {
+    "sub_category_name": "Improper risk profiling/ unsuitable advice"
+  },
+  {
+    "sub_category_name": "Incomplete Details"
+  },
+  {
+    "sub_category_name": "Infrastructure Investment Trust"
+  },
+  {
+    "sub_category_name": "Insistence on Power of Attorney in favour of DP"
+  },
+  {
+    "sub_category_name": "Insurance Regulatory and Development Authority"
+  },
+  {
+    "sub_category_name": "Investment conditions and restrictions related"
+  },
+  {
+    "sub_category_name": "Investment made by the PMS in contradiction to the terms of the agreement"
+  },
+  {
+    "sub_category_name": "Issue / offer price related"
+  },
+  {
+    "sub_category_name": "Issues regarding various statements provided by fund to investors"
+  },
+  {
+    "sub_category_name": "Lack of response from RTA / Improper service"
+  },
+  {
+    "sub_category_name": "Manipulation"
+  },
+  {
+    "sub_category_name": "Margins/ Imposition of penalty"
+  },
+  {
+    "sub_category_name": "Ministry of Corporate Affairs"
+  },
+  {
+    "sub_category_name": "Mis-Management of Fund/ Fraudulent activity in fund related"
+  },
+  {
+    "sub_category_name": "Mis-appropriation of client's funds / securities"
+  },
+  {
+    "sub_category_name": "Mis-appropriation of clients funds / securities"
+  },
+  {
+    "sub_category_name": "Mis-selling to investors"
+  },
+  {
+    "sub_category_name": "Non Acceptance of demat/remat request"
+  },
+  {
+    "sub_category_name": "Non adherence to the Negative list given by client"
+  },
+  {
+    "sub_category_name": "Non closure/ delay in closure of account"
+  },
+  {
+    "sub_category_name": "Non execution of PMS client agreement"
+  },
+  {
+    "sub_category_name": "Non furnishing of Disclosure Document to the client"
+  },
+  {
+    "sub_category_name": "Non furnishing of reports to client"
+  },
+  {
+    "sub_category_name": "Non implementation of IGRC recommendation / arbitration award"
+  },
+  {
+    "sub_category_name": "Non implementation of arbitration award"
+  },
+  {
+    "sub_category_name": "Non receipt of Annual Account"
+  },
+  {
+    "sub_category_name": "Non receipt of Annual Report/ Abridged Summary"
+  },
+  {
+    "sub_category_name": "Non receipt of account opening kit/tariff sheet/agreement"
+  },
+  {
+    "sub_category_name": "Non receipt of bonus shares"
+  },
+  {
+    "sub_category_name": "Non receipt of dividend"
+  },
+  {
+    "sub_category_name": "Non receipt of interest for delay in Dividend"
+  },
+  {
+    "sub_category_name": "Non receipt of interest for delay in Redemption proceeds of debt security"
+  },
+  {
+    "sub_category_name": "Non receipt of interest for delay in interest on debt security"
+  },
+  {
+    "sub_category_name": "Non receipt of shares after conversion/ endorsement/ consolidation/splitting"
+  },
+  {
+    "sub_category_name": "Non segregation of client funds and securities from other clients"
+  },
+  {
+    "sub_category_name": "Non settlement of accounts"
+  },
+  {
+    "sub_category_name": "Non settlement of client account"
+  },
+  {
+    "sub_category_name": "Non updation of Address/Signature or corrections etc."
+  },
+  {
+    "sub_category_name": "Non updation of changes"
+  },
+  {
+    "sub_category_name": "Non updation of changes viz. address, PAN, bank details, nomination, etc."
+  },
+  {
+    "sub_category_name": "Non updation of changes viz.address, PAN, bank details, nomination, etc"
+  },
+  {
+    "sub_category_name": "Non-acceptance of units in exit offer"
+  },
+  {
+    "sub_category_name": "Non-credit units for SIP / Lump sum transactions"
+  },
+  {
+    "sub_category_name": "Non-disclosure or delayed/incomplete disclosure to investors"
+  },
+  {
+    "sub_category_name": "Non-disclosure/ wrong disclosure in offer documents"
+  },
+  {
+    "sub_category_name": "Non-disclosure/wrong disclosure in offer documents"
+  },
+  {
+    "sub_category_name": "Non-execution of order"
+  },
+  {
+    "sub_category_name": "Non-execution of order/ Delay in Execution"
+  },
+  {
+    "sub_category_name": "Non-exercise of due diligence/Inadequate disclosure in offer documents"
+  },
+  {
+    "sub_category_name": "Non-payment of compensation to Retail Individual Investors"
+  },
+  {
+    "sub_category_name": "Non-receipt  of delivery"
+  },
+  {
+    "sub_category_name": "Non-receipt of Account statements"
+  },
+  {
+    "sub_category_name": "Non-receipt of Agreement copies"
+  },
+  {
+    "sub_category_name": "Non-receipt of Bills"
+  },
+  {
+    "sub_category_name": "Non-receipt of Contract notes"
+  },
+  {
+    "sub_category_name": "Non-receipt of Debt Securities after endorsement / consolidation / splitting"
+  },
+  {
+    "sub_category_name": "Non-receipt of Debt securities"
+  },
+  {
+    "sub_category_name": "Non-receipt of Debt securities after Transfer"
+  },
+  {
+    "sub_category_name": "Non-receipt of Debt securities after Transmission"
+  },
+  {
+    "sub_category_name": "Non-receipt of Statement of Account/Unit Certificate"
+  },
+  {
+    "sub_category_name": "Non-receipt of corporate benefits"
+  },
+  {
+    "sub_category_name": "Non-receipt of documents(Contract notes, Account statements and other bills)"
+  },
+  {
+    "sub_category_name": "Non-receipt of documents/ Delay in delivery of documents (Contract notes, Account statements and other bills)"
+  },
+  {
+    "sub_category_name": "Non-receipt of duplicate debt securities certificate"
+  },
+  {
+    "sub_category_name": "Non-receipt of duplicate share certificate"
+  },
+  {
+    "sub_category_name": "Non-receipt of fractional entitlement"
+  },
+  {
+    "sub_category_name": "Non-receipt of interest for delay in diespatch/credit of Redemption proceeds of debt securities"
+  },
+  {
+    "sub_category_name": "Non-receipt of interest for delay in dispatch/credit of debt securities"
+  },
+  {
+    "sub_category_name": "Non-receipt of interest for delay in dispatch/credit of interest on debt securities"
+  },
+  {
+    "sub_category_name": "Non-receipt of interest on debt securities"
+  },
+  {
+    "sub_category_name": "Non-receipt of letter of offer for Buy Back"
+  },
+  {
+    "sub_category_name": "Non-receipt of letter of offer for delisting"
+  },
+  {
+    "sub_category_name": "Non-receipt of payment"
+  },
+  {
+    "sub_category_name": "Non-receipt of redemption amount of debt securities"
+  },
+  {
+    "sub_category_name": "Non-receipt of securities"
+  },
+  {
+    "sub_category_name": "Non-receipt of securities after transfer"
+  },
+  {
+    "sub_category_name": "Non-receipt of securities after transmission"
+  },
+  {
+    "sub_category_name": "Non-receipt/delay in receipt of Funds"
+  },
+  {
+    "sub_category_name": "Non-redressal or delayed redressal of investor grievance"
+  },
+  {
+    "sub_category_name": "Non-updation of changes in account (address/ signatories/bank details/ PAN/ Nomination etc.)"
+  },
+  {
+    "sub_category_name": "Non-winding up/delayed winding up of scheme"
+  },
+  {
+    "sub_category_name": "Not satisfied with the Buy Back Price"
+  },
+  {
+    "sub_category_name": "Not satisfied with the delisting Price"
+  },
+  {
+    "sub_category_name": "Not under SEBI Purview"
+  },
+  {
+    "sub_category_name": "Off-market transfers"
+  },
+  {
+    "sub_category_name": "Offering assured return"
+  },
+  {
+    "sub_category_name": "Offering free trials"
+  },
+  {
+    "sub_category_name": "Online nomination related"
+  },
+  {
+    "sub_category_name": "Other Depository Services"
+  },
+  {
+    "sub_category_name": "Other service defaults"
+  },
+  {
+    "sub_category_name": "Others"
+  },
+  {
+    "sub_category_name": "Pension Fund Regulatory and Development Authority"
+  },
+  {
+    "sub_category_name": "Pledge related"
+  },
+  {
+    "sub_category_name": "Real Estate Investment Trust ( REIT’S )"
+  },
+  {
+    "sub_category_name": "Receipt of dividend in physical mode instead of electronic mode"
+  },
+  {
+    "sub_category_name": "Refusal for early termination of agreement"
+  },
+  {
+    "sub_category_name": "Refusal for early withdrawal"
+  },
+  {
+    "sub_category_name": "Reserve Bank of India"
+  },
+  {
+    "sub_category_name": "Rights entitlements"
+  },
+  {
+    "sub_category_name": "SE MF platform"
+  },
+  {
+    "sub_category_name": "SMS related"
+  },
+  {
+    "sub_category_name": "Schemes of Registered SM REITs"
+  },
+  {
+    "sub_category_name": "Stop transfer related"
+  },
+  {
+    "sub_category_name": "Technical glitches/outage/connectivity/system related problem"
+  },
+  {
+    "sub_category_name": "Transaction failures at Channel partners/platforms"
+  },
+  {
+    "sub_category_name": "Transfer of securities/dividend/interest to IEPF"
+  },
+  {
+    "sub_category_name": "Transmission related"
+  },
+  {
+    "sub_category_name": "Transposition of holders"
+  },
+  {
+    "sub_category_name": "Unauthorised Switch between schemes"
+  },
+  {
+    "sub_category_name": "Unauthorised Transaction in account"
+  },
+  {
+    "sub_category_name": "Unauthorised changes in account (address/ signatories/bank details/PAN etc.)"
+  },
+  {
+    "sub_category_name": "Unauthorized trades in client's account"
+  },
+  {
+    "sub_category_name": "Unauthorized trades in clients account"
+  },
+  {
+    "sub_category_name": "Up-front fee charged"
+  },
+  {
+    "sub_category_name": "Vault Manager"
+  },
+  {
+    "sub_category_name": "Warehouses / Warehouses Service Provider / Assaying / Testing"
+  },
+  {
+    "sub_category_name": "Wrong Switch between Schemes"
+  },
+  {
+    "sub_category_name": "Wrong data captured"
+  },
+  {
+    "sub_category_name": "Wrong disclosures /non- disclosures in Disclosure Document"
+  },
+  {
+    "sub_category_name": "Wrong execution of order"
+  },
+  {
+    "sub_category_name": "Wrong or excess charges/load"
+  },
+  {
+    "sub_category_name": "Wrong/ Excess Charges"
+  },
+  {
+    "sub_category_name": "Wrong/non-disclosures in SID, SAI, KIM"
+  },
+  {
+    "sub_category_name": "Wrong/non-disclosures in website of AMC"
+  },
+  {
+    "sub_category_name": "e-DIS related"
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "category_code": "cat12",
+    "category_name": "Stock Broker"
+  },
+  {
+    "category_code": "cat34",
+    "category_name": "Listed Company- Equity Issue (Dividend/Transfer/Transmission/Duplicate Shares/Bonus Shares etc.)"
+  },
+  {
+    "category_code": "cat8",
+    "category_name": "Listed Company-IPO/Prelisting /Offer Document (Debenture and Bonds)"
+  },
+  {
+    "category_code": "cat32",
+    "category_name": "Listed Company-IPO/Prelisting/Offer document (shares)"
+  },
+  {
+    "category_code": "cat40",
+    "category_name": "Exchange"
+  },
+  {
+    "category_code": "cat42",
+    "category_name": "Depository"
+  },
+  {
+    "category_code": "cat28",
+    "category_name": "Listed Company- Buy Back of Securities"
+  },
+  {
+    "category_code": "cat30",
+    "category_name": "Listed Company-Delisting of securities"
+  },
+  {
+    "category_code": "cat36",
+    "category_name": "Clearing Corporation"
+  },
+  {
+    "category_code": "cat48",
+    "category_name": "Category 1 Alternative Investment Fund"
+  },
+  {
+    "category_code": "cat50",
+    "category_name": "Category 2 Alternative Investment Fund"
+  },
+  {
+    "category_code": "cat52",
+    "category_name": "Category 3 Alternative Investment Fund"
+  },
+  {
+    "category_code": "cat211",
+    "category_name": "Listed Company- Debt Issue (Interest/Redemption/Transfer/Transmission etc.)"
+  },
+  {
+    "category_code": "cat202",
+    "category_name": "Collective Investment Scheme"
+  },
+  {
+    "category_code": "cat38",
+    "category_name": "Mutual Fund trading on Exchange Platform"
+  },
+  {
+    "category_code": "cat14",
+    "category_name": "Depository Participant"
+  },
+  {
+    "category_code": "cat212",
+    "category_name": "Other"
+  },
+  {
+    "category_code": "cat210",
+    "category_name": "Vault Manager"
+  },
+  {
+    "category_code": "cat23001",
+    "category_name": "Share based Employee benefits"
+  },
+  {
+    "category_code": "cat6",
+    "category_name": "Debenture Trustee"
+  },
+  {
+    "category_code": "cat2",
+    "category_name": "Mutual Fund"
+  },
+  {
+    "category_code": "cat18",
+    "category_name": "Investment Advisors"
+  },
+  {
+    "category_code": "cat20",
+    "category_name": "Research Analyst"
+  },
+  {
+    "category_code": "cat22",
+    "category_name": "Registrar and Share Transfer Agent"
+  },
+  {
+    "category_code": "cat4",
+    "category_name": "Portfolio Manager"
+  },
+  {
+    "category_code": "cat10",
+    "category_name": "Venture Capital Fund"
+  },
+  {
+    "category_code": "cat16",
+    "category_name": "KYC Registration Agency"
+  },
+  {
+    "category_code": "cat24",
+    "category_name": "Merchant Bankers"
+  },
+  {
+    "category_code": "cat26",
+    "category_name": "Bankers to the issue"
+  },
+  {
+    "category_code": "cat204",
+    "category_name": "Credit Rating Agencies"
+  },
+  {
+    "category_code": "cat206",
+    "category_name": "Real Estate Investment Trust ( REIT’S )"
+  },
+  {
+    "category_code": "cat102",
+    "category_name": "Infrastructure Investment Trust"
+  },
+  {
+    "category_code": "cat256",
+    "category_name": "Online Bond Platform Providers"
+  },
+  {
+    "category_code": "cat4001",
+    "category_name": "Securitised Debt Instruments (SDIs)"
+  },
+  {
+    "category_code": "cat27003",
+    "category_name": "Small and Medium Real Estate Investment Trusts (SM REITs)"
+  }
+]
