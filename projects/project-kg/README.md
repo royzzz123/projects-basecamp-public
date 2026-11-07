@@ -10,6 +10,13 @@ The graph (Neo4j) is the store of record for the graph + computed scores. The
 UI is served by this service at `/autoescalation` — the main `project-fe`
 app is untouched.
 
+## Demo
+
+[![Auto-escalation UI demo](docs/media/kg-demo.gif)](docs/media/kg-demo.mp4)
+
+The escalation queue, the knowledge graph and the case detail panel at `/autoescalation`.
+Click the preview to open the full video ([kg-demo.mp4](docs/media/kg-demo.mp4), 57 s, with audio).
+
 ## Architecture
 
 ```
